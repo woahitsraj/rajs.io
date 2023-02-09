@@ -41,7 +41,7 @@
 
 <style>
 	header {
-		height: 100vh;
+		height: 85vh;
 		max-height: 64rem;
 	}
 	.content {
