@@ -18,8 +18,8 @@
 	<hr />
 	<img src={me} alt="Rajan Singh" />
 	<p>
-		I'm a developer currently at <a href="https://subskribe.com/">Subskribe</a>. I program in
-		React/Svelte and Node but I'm always learning new things. For me programming isn't just a
+		I'm a developer currently at <a href="https://subskribe.com/">Subskribe</a>. I experienced in
+		React/Svelte and Typescript but I'm always learning new things. For me programming isn't just a
 		career, it's been a lifelong hobby.
 	</p>
 	<p>
