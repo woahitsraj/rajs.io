@@ -1,12 +1,10 @@
 <script>
 	import Footer from '$lib/Footer.svelte';
-	import Header from '$lib/Header.svelte';
-	import './style.css';
 	import './normalize.css';
-	import './main.css';
+	import 'water.css/out/water.min.css';
+	import './styles.css';
 </script>
 
-<Header />
 <main>
 	<slot />
 </main>

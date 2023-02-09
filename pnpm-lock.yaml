@@ -18,6 +18,10 @@ specifiers:
   typescript: ^4.9.3
   vite: ^4.0.0
   vitest: ^0.25.3
+  water.css: ^2.1.1
+
+dependencies:
+  water.css: 2.1.1
 
 devDependencies:
   '@playwright/test': 1.29.2
@@ -1984,6 +1988,10 @@ packages:
       - supports-color
       - terser
     dev: true
+
+  /water.css/2.1.1:
+    resolution: {integrity: sha512-gkO5byC+pZ7ndEV18hs/RmxKoDtEZXx06tZU4ocI3IBdv4xV64tlhjIFbDjurysRnNkiy2oQTr8PakRyzZWPJw==}
+    dev: false
 
   /which/2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
