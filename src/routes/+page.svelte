@@ -24,7 +24,7 @@
 	</p>
 	<p>
 		I attend development related meet-ups and conferences, listen to development podcast and I am
-		always itching try new things which got me hooked onto React and Svelte early.
+		always keen to try new things which got me hooked onto React and Svelte early.
 	</p>
 	<p>
 		I'm a strong believer in long periods of undistracted "deep work" as popularized by Cal Newport
