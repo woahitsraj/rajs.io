@@ -8,5 +8,8 @@ node_modules
 !.env.example
 .vercel
 .output
+playwright-report
+test-results
+blob-report
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
