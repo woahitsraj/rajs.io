@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Footer from '$lib/Footer.svelte';
-	import './normalize.css';
-	import './styles.css';
+	import '../app.css';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
