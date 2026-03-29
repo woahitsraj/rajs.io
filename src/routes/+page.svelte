@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import me from '$lib/assets/me.jpg';
-	export let data: PageData;
-	$: ({ city, country } = data);
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let { city, country } = $derived(data);
 </script>
 
 <header>
