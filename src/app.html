@@ -3,9 +3,30 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="color-scheme" content="light dark" />
-		<meta name="theme-color" content="#f3ede3" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#15110d" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#f3ede3" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<script>
+			(() => {
+				const light = '#f3ede3';
+				const dark = '#15110d';
+				const root = document.documentElement;
+				const themeMeta = document.querySelector('meta[name="theme-color"]');
+				const stored = localStorage.getItem('site-theme');
+				const isDark =
+					stored !== null
+						? stored === 'dark'
+						: window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+				root.dataset.theme = isDark ? 'dark' : 'light';
+				themeMeta?.setAttribute('content', isDark ? dark : light);
+			})();
+		</script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap"
+			rel="stylesheet"
+		/>
 		<link
 			rel="apple-touch-icon"
 			sizes="180x180"

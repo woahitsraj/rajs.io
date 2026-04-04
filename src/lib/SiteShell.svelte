@@ -9,41 +9,58 @@
 		footerText?: string;
 	}
 
+	const LIGHT_THEME = '#f3ede3';
+	const DARK_THEME = '#15110d';
+
 	let { children, footerText = 'Rajan Singh' }: Props = $props();
 	let pathname = $derived(page.url.pathname);
 	let dark = $state(false);
 
+	function applyTheme(nextDark: boolean) {
+		dark = nextDark;
+
+		const root = document.documentElement;
+		const theme = nextDark ? 'dark' : 'light';
+		root.dataset.theme = theme;
+
+		const themeMeta = document.querySelector('meta[name="theme-color"]');
+		themeMeta?.setAttribute('content', nextDark ? DARK_THEME : LIGHT_THEME);
+	}
+
 	onMount(() => {
+		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 		try {
 			const stored = localStorage.getItem('site-theme');
-			if (stored !== null) dark = stored === 'dark';
-			else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			applyTheme(stored !== null ? stored === 'dark' : prefersDark);
 		} catch {
-			/* noop */
+			applyTheme(prefersDark);
 		}
 	});
 
 	function toggle() {
-		dark = !dark;
+		const nextDark = !dark;
+		applyTheme(nextDark);
+
 		try {
-			localStorage.setItem('site-theme', dark ? 'dark' : 'light');
+			localStorage.setItem('site-theme', nextDark ? 'dark' : 'light');
 		} catch {
 			/* noop */
 		}
 	}
 </script>
 
-<div class="site-shell" class:dark>
-	<div class="noise" aria-hidden="true"></div>
-
+<div class="site-shell">
 	<nav>
 		<a href={`${base}/`}>Home</a>
 		<div class="page-links">
 			<a href={`${base}/work`} class:active={pathname === `${base}/work`}>Work</a>
 			<a href={`${base}/experience`} class:active={pathname === `${base}/experience`}>Experience</a>
 		</div>
-		<button onclick={toggle} aria-label="toggle theme">
-			{dark ? '○' : '●'}
+		<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
+			<span class="theme-toggle__glyph" aria-hidden="true">
+				<span class="theme-toggle__dot"></span>
+			</span>
 		</button>
 	</nav>
 
