@@ -11,7 +11,11 @@
 		{ label: 'Resume', href: resume },
 		{ label: 'GitHub', href: 'https://github.com/woahitsraj' },
 		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/woahitsraj/' },
+		{ label: 'Bluesky', href: 'https://bsky.app/profile/woahitsraj.com' },
+		{ label: 'Goodreads', href: 'https://www.goodreads.com/woahitsraj' },
+		{ label: 'Letterboxd', href: 'https://letterboxd.com/woahitsraj/' },
 		{ label: 'Instagram', href: 'https://instagram.com/woahitsraj' },
+		{ label: 'Threads', href: 'https://www.threads.net/@woahitsraj' },
 		{ label: 'Twitter', href: 'https://twitter.com/woahitsraj' }
 	];
 
@@ -63,9 +67,8 @@
 		</p>
 		<p>I'm an American 🇺🇸 and Canadian 🇨🇦 citizen but currently I call Sweden 🇸🇪 my home.</p>
 		<p>
-			I'm a strong believer in long periods of undistracted "deep work" as popularized by Cal
-			Newport to perform at a high level. I speak English natively and I speak Japanese 🇯🇵 and
-			Swedish 🇸🇪 at conversational fluency.
+			I'm a strong believer in long periods of undistracted "deep work" to get things done. I speak
+			English natively and I speak Japanese 🇯🇵 and Swedish 🇸🇪 at conversational fluency.
 		</p>
 	</section>
 
@@ -74,7 +77,7 @@
 		<dl class="skills-list">
 			<div>
 				<dt>Programming Languages</dt>
-				<dd>JavaScript, HTML, CSS, TypeScript, shell scripting</dd>
+				<dd>TypeScript, JavaScript, HTML, CSS, Bash</dd>
 			</div>
 			<div>
 				<dt>Frameworks and Tools</dt>
