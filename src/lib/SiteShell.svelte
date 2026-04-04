@@ -51,7 +51,7 @@
 </script>
 
 <div class="site-shell">
-	<nav>
+	<nav class="site-shell__frame">
 		<a href={`${base}/`}>Home</a>
 		<div class="page-links">
 			<a href={`${base}/work`} class:active={pathname === `${base}/work`}>Work</a>
@@ -64,13 +64,15 @@
 		</button>
 	</nav>
 
-	{#key pathname}
-		<RevealScope>
-			{@render children?.()}
-		</RevealScope>
-	{/key}
+	<div class="site-shell__page">
+		{#key pathname}
+			<RevealScope>
+				{@render children?.()}
+			</RevealScope>
+		{/key}
+	</div>
 
-	<footer>
+	<footer class="site-shell__frame">
 		<span>{footerText}</span>
 	</footer>
 </div>

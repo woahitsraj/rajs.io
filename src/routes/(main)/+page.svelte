@@ -1,4 +1,14 @@
 <script lang="ts">
+	import {
+		siBluesky,
+		siGithub,
+		siGoodreads,
+		siInstagram,
+		siLetterboxd,
+		siThreads,
+		siX
+	} from 'simple-icons';
+	import type { SimpleIcon } from 'simple-icons';
 	import type { PageData } from './$types';
 	import resume from '$lib/assets/Rajan Singh Resume.pdf';
 	import me from '$lib/assets/me.jpeg';
@@ -7,17 +17,29 @@
 		data: PageData;
 	}
 
-	const socialLinks = [
-		{ label: 'Resume', href: resume },
-		{ label: 'GitHub', href: 'https://github.com/woahitsraj' },
+	type LinkIcon = Pick<SimpleIcon, 'path'> | 'resume';
+
+	interface SocialLink {
+		label: string;
+		href: string;
+		icon?: LinkIcon;
+	}
+
+	const socialLinks: SocialLink[] = [
+		{ label: 'Resume', href: resume, icon: 'resume' },
+		{ label: 'GitHub', href: 'https://github.com/woahitsraj', icon: siGithub },
 		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/woahitsraj/' },
-		{ label: 'Bluesky', href: 'https://bsky.app/profile/woahitsraj.com' },
-		{ label: 'Goodreads', href: 'https://www.goodreads.com/woahitsraj' },
-		{ label: 'Letterboxd', href: 'https://letterboxd.com/woahitsraj/' },
-		{ label: 'Instagram', href: 'https://instagram.com/woahitsraj' },
-		{ label: 'Threads', href: 'https://www.threads.net/@woahitsraj' },
-		{ label: 'Twitter', href: 'https://twitter.com/woahitsraj' }
+		{ label: 'Bluesky', href: 'https://bsky.app/profile/woahitsraj.com', icon: siBluesky },
+		{ label: 'Goodreads', href: 'https://www.goodreads.com/woahitsraj', icon: siGoodreads },
+		{ label: 'Letterboxd', href: 'https://letterboxd.com/woahitsraj/', icon: siLetterboxd },
+		{ label: 'Instagram', href: 'https://instagram.com/woahitsraj', icon: siInstagram },
+		{ label: 'Threads', href: 'https://www.threads.net/@woahitsraj', icon: siThreads },
+		{ label: 'Twitter', href: 'https://twitter.com/woahitsraj', icon: siX }
 	];
+
+	function isCustomIcon(icon?: LinkIcon): icon is 'resume' {
+		return typeof icon === 'string';
+	}
 
 	function flagFromCountryCode(code?: string) {
 		if (!code || code.length !== 2) return '🇸🇪';
@@ -118,9 +140,24 @@
 		<h2>Connect</h2>
 		<div class="links">
 			{#each socialLinks as link (link.href)}
-				<a href={link.href} target="_blank" rel="noopener noreferrer">
-					<span>⌥</span>
-					{link.label}
+				<a href={link.href} target="_blank" rel="noopener noreferrer" class:text-only={!link.icon}>
+					{#if link.icon}
+						<span class="link-icon" aria-hidden="true">
+							{#if isCustomIcon(link.icon)}
+								<svg class="stroke-icon" viewBox="0 0 24 24" focusable="false">
+									<path d="M8 3.5h6.25l4.25 4.25V19A1.5 1.5 0 0 1 17 20.5H8A1.5 1.5 0 0 1 6.5 19V5A1.5 1.5 0 0 1 8 3.5Z" />
+									<path d="M14.25 3.5V8h4.25" />
+									<path d="M9 12h6" />
+									<path d="M9 15h6" />
+								</svg>
+							{:else}
+								<svg viewBox="0 0 24 24" focusable="false">
+									<path d={link.icon.path}></path>
+								</svg>
+							{/if}
+						</span>
+					{/if}
+					<span class="link-label">{link.label}</span>
 				</a>
 			{/each}
 		</div>
