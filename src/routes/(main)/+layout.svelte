@@ -1,5 +1,6 @@
 <script lang="ts">
-	import '../app.css';
+	import SiteShell from '$lib/SiteShell.svelte';
+
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -7,4 +8,6 @@
 	let { children }: Props = $props();
 </script>
 
-{@render children?.()}
+<SiteShell>
+	{@render children?.()}
+</SiteShell>

@@ -137,17 +137,84 @@ export interface LongestStays {
 	'da-nang-vietnam': number;
 }
 
-// const defaultLocation: Location = {
-//   now: {
-//     city: 'Toronto',
-//   }
-// };
+interface CachedLocation {
+	city?: string;
+	country?: string;
+	countryCode?: string;
+}
 
-export const load = (async ({ fetch }) => {
+const NOMADLIST_FRESH_MS = 5 * 60_000;
+const NOMADLIST_RETRY_MS = 60_000;
+
+let cachedLocation: CachedLocation | undefined;
+let cachedAt = 0;
+let lastAttemptAt = 0;
+let refreshPromise: Promise<CachedLocation> | undefined;
+
+export const config = {
+	isr: {
+		expiration: 300
+	}
+};
+
+async function fetchNomadLocation(fetch: PageServerLoadEvent['fetch']): Promise<CachedLocation> {
 	const res = await fetch('https://nomadlist.com/@woahitsraj.json');
+	if (!res.ok) {
+		throw new Error(`Nomad List request failed: ${res.status}`);
+	}
+
 	const data: NomadListData = await res.json();
+	const location = data?.location?.now || data?.location?.next;
+
 	return {
-		city: data?.location?.now?.city || data?.location?.next?.city,
-		country: data?.location?.now?.country || data?.location?.next?.country
+		city: location?.city,
+		country: location?.country,
+		countryCode: location?.country_code
 	};
+}
+
+function startRefresh(fetch: PageServerLoadEvent['fetch']) {
+	const now = Date.now();
+	if (refreshPromise) return refreshPromise;
+	if (now - lastAttemptAt < NOMADLIST_RETRY_MS) {
+		return Promise.resolve(cachedLocation ?? {});
+	}
+
+	lastAttemptAt = now;
+	refreshPromise = fetchNomadLocation(fetch)
+		.then((location) => {
+			cachedLocation = location;
+			cachedAt = Date.now();
+			return location;
+		})
+		.catch(() => cachedLocation ?? {})
+		.finally(() => {
+			refreshPromise = undefined;
+		});
+
+	return refreshPromise;
+}
+
+type PageServerLoadEvent = Parameters<PageServerLoad>[0];
+
+export const load = (async ({ fetch, setHeaders }) => {
+	setHeaders({
+		'cache-control': 'public, max-age=0, s-maxage=300, stale-while-revalidate=86400'
+	});
+
+	const now = Date.now();
+	if (cachedLocation && now - cachedAt < NOMADLIST_FRESH_MS) {
+		return cachedLocation;
+	}
+
+	if (cachedLocation) {
+		void startRefresh(fetch);
+		return cachedLocation;
+	}
+
+	try {
+		return await startRefresh(fetch);
+	} catch {
+		return {};
+	}
 }) satisfies PageServerLoad;
