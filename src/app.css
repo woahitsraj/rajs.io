@@ -45,6 +45,22 @@ body {
 	interpolate-size: allow-keywords;
 }
 
+@media (prefers-color-scheme: dark) {
+	html:not([data-theme]) {
+		--site-bg: #15110d;
+		--site-text: #e0d4c4;
+		--site-text-muted: #8a7a68;
+		--site-accent: #7ab880;
+		--site-accent-soft: rgba(122, 184, 128, 0.1);
+		--site-surface: rgba(28, 23, 16, 0.8);
+		--site-border: rgba(224, 212, 196, 0.1);
+		--site-shadow: rgba(0, 0, 0, 0.3);
+		--site-ring: rgba(224, 212, 196, 0.06);
+		--site-rule: rgba(224, 212, 196, 0.12);
+		color-scheme: dark;
+	}
+}
+
 html[data-theme='dark'] {
 	--site-bg: #15110d;
 	--site-text: #e0d4c4;
@@ -249,7 +265,12 @@ html.js .reveal-scope:not(.visible) .reveal {
 }
 
 .site-shell nav button.theme-toggle {
+	display: none;
 	padding: 0;
+}
+
+html.js .site-shell nav button.theme-toggle {
+	display: flex;
 }
 
 .site-shell .theme-toggle__glyph {

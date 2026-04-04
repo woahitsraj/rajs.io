@@ -43,4 +43,29 @@ test.describe('without javascript', () => {
 		expect(styles.opacity).toBe('1');
 		expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(styles.transform);
 	});
+
+	test('hides the theme toggle', async ({ page }) => {
+		await page.goto('/');
+		await expect(page.getByRole('button', { name: 'toggle theme' })).not.toBeVisible();
+	});
+
+	test.describe('with a dark system preference', () => {
+		test.use({ colorScheme: 'dark' });
+
+		test('uses the dark theme fallback', async ({ page }) => {
+			await page.goto('/');
+
+			const rootTheme = await page.locator('html').evaluate((element) => {
+				const computed = getComputedStyle(element);
+
+				return {
+					siteBg: computed.getPropertyValue('--site-bg').trim(),
+					colorScheme: computed.colorScheme
+				};
+			});
+
+			expect(rootTheme.siteBg).toBe('#15110d');
+			expect(rootTheme.colorScheme).toBe('dark');
+		});
+	});
 });
