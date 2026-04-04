@@ -144,10 +144,24 @@ export interface LongestStays {
 // };
 
 export const load = (async ({ fetch }) => {
-	const res = await fetch('https://nomadlist.com/@woahitsraj.json');
-	const data: NomadListData = await res.json();
-	return {
-		city: data?.location?.now?.city || data?.location?.next?.city,
-		country: data?.location?.now?.country || data?.location?.next?.country
-	};
+	try {
+		const res = await fetch('https://nomadlist.com/@woahitsraj.json');
+		if (!res.ok) {
+			throw new Error(`Nomad List request failed: ${res.status}`);
+		}
+
+		const data: NomadListData = await res.json();
+		const location = data?.location?.now || data?.location?.next;
+		return {
+			city: location?.city,
+			country: location?.country,
+			countryCode: location?.country_code
+		};
+	} catch {
+		return {
+			city: undefined,
+			country: undefined,
+			countryCode: undefined
+		};
+	}
 }) satisfies PageServerLoad;

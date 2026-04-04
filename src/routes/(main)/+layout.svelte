@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Footer from '$lib/Footer.svelte';
+	import SiteShell from '$lib/SiteShell.svelte';
+
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -7,7 +8,6 @@
 	let { children }: Props = $props();
 </script>
 
-<main>
+<SiteShell>
 	{@render children?.()}
-</main>
-<Footer />
+</SiteShell>
