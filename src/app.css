@@ -129,6 +129,14 @@ body {
 }
 
 .site-shell .reveal {
+	opacity: 1;
+	transform: translateY(0);
+	transition:
+		opacity var(--motion-enter),
+		transform var(--motion-enter);
+}
+
+html.js .reveal-scope:not(.visible) .reveal {
 	opacity: 0;
 	transform: translateY(20px);
 	transition:
