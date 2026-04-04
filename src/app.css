@@ -13,6 +13,10 @@ body {
 :root {
 	--font-body: 'Lora', Georgia, serif;
 	--font-display: 'Fraunces', serif;
+	--text-caption: 0.75rem;
+	--text-body: 1rem;
+	--text-subtitle: 1.25rem;
+	--text-location: 1.5rem;
 	--space-12: 0.75rem;
 	--space-16: 1rem;
 	--space-24: 1.5rem;
@@ -72,6 +76,19 @@ body {
 	z-index: 10;
 }
 
+.site-shell a {
+	transition:
+		color 0.25s ease,
+		text-decoration-color 0.25s ease,
+		background-color 0.25s ease,
+		border-color 0.25s ease;
+}
+
+.site-shell a:focus-visible {
+	outline: 2px solid var(--site-accent);
+	outline-offset: 3px;
+}
+
 .site-shell .noise {
 	position: fixed;
 	inset: 0;
@@ -82,6 +99,10 @@ body {
 	background-size: 256px 256px;
 }
 
+.reveal-scope {
+	display: contents;
+}
+
 .site-shell .reveal {
 	opacity: 0;
 	transform: translateY(20px);
@@ -90,46 +111,47 @@ body {
 		transform var(--motion-enter);
 }
 
-.site-shell.visible .reveal-1,
-.site-shell.visible .reveal-2,
-.site-shell.visible .reveal-3,
-.site-shell.visible .reveal-4,
-.site-shell.visible .reveal-5 {
+.reveal-scope.visible .reveal-1,
+.reveal-scope.visible .reveal-2,
+.reveal-scope.visible .reveal-3,
+.reveal-scope.visible .reveal-4,
+.reveal-scope.visible .reveal-5 {
 	opacity: 1;
 	transform: translateY(0);
 }
 
-.site-shell.visible .reveal-1 {
-	transition-delay: 0.1s;
+.reveal-scope.visible .reveal-1 {
+	transition-delay: 0.1s, 0.1s, 0s, 0s, 0s;
 }
 
-.site-shell.visible .reveal-2 {
-	transition-delay: 0.24s;
+.reveal-scope.visible .reveal-2 {
+	transition-delay: 0.25s, 0.25s, 0s, 0s, 0s;
 }
 
-.site-shell.visible .reveal-3 {
-	transition-delay: 0.36s;
+.reveal-scope.visible .reveal-3 {
+	transition-delay: 0.38s, 0.38s, 0s, 0s, 0s;
 }
 
-.site-shell.visible .reveal-4 {
-	transition-delay: 0.48s;
+.reveal-scope.visible .reveal-4 {
+	transition-delay: 0.5s, 0.5s, 0s, 0s, 0s;
 }
 
-.site-shell.visible .reveal-5 {
-	transition-delay: 0.6s;
+.reveal-scope.visible .reveal-5 {
+	transition-delay: 0.62s, 0.62s, 0s, 0s, 0s;
 }
 
 .site-shell nav {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
 	align-items: center;
-	justify-content: space-between;
 	padding: 1.2rem var(--space-32);
 	border-bottom: 1px solid var(--site-rule);
 	transition: border-color 0.45s ease;
 }
 
 .site-shell nav > a {
-	font-size: 0.82rem;
+	justify-self: start;
+	font-size: var(--text-body);
 	letter-spacing: 0.08em;
 	color: var(--site-accent);
 	text-decoration: none;
@@ -140,7 +162,27 @@ body {
 	color: var(--site-text);
 }
 
+.site-shell .page-links {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-24);
+}
+
+.site-shell .page-links a {
+	font-size: var(--text-body);
+	color: var(--site-text-muted);
+	text-decoration: none;
+	transition: color 0.25s ease;
+}
+
+.site-shell .page-links a:hover,
+.site-shell .page-links a.active {
+	color: var(--site-accent);
+}
+
 .site-shell nav button {
+	justify-self: end;
 	background: none;
 	border: 1px solid var(--site-rule);
 	color: var(--site-text-muted);
@@ -169,6 +211,14 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 2.5rem;
+}
+
+.site-shell header.page-head {
+	padding: var(--space-48) var(--space-32) var(--space-24);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-12);
+	max-width: 52rem;
 }
 
 .site-shell figure.portrait {
@@ -204,7 +254,7 @@ body {
 }
 
 .site-shell p.eyebrow {
-	font-size: 0.95rem;
+	font-size: var(--text-body);
 	font-style: italic;
 	color: var(--site-text-muted);
 	margin: 0 0 0.45rem;
@@ -212,7 +262,7 @@ body {
 
 .site-shell h1 {
 	font-family: var(--font-display);
-	font-size: clamp(3.2rem, 7vw, 6rem);
+	font-size: clamp(3rem, 7vw, 6rem);
 	font-weight: 300;
 	line-height: 1;
 	margin: 0 0 0.65rem;
@@ -228,7 +278,7 @@ body {
 }
 
 .site-shell p.subtitle {
-	font-size: 1.05rem;
+	font-size: var(--text-subtitle);
 	color: var(--site-text-muted);
 	margin: 0;
 	letter-spacing: 0.02em;
@@ -250,18 +300,22 @@ body {
 	box-shadow: 0 4px 24px var(--site-shadow);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-	transition:
-		background-color 0.45s ease,
-		border-color 0.45s ease,
-		box-shadow 0.45s ease;
+	transition-property: opacity, transform, background-color, border-color, box-shadow;
+	transition-duration: 0.7s, 0.7s, 0.45s, 0.45s, 0.45s;
+	transition-timing-function: ease, ease, ease, ease, ease;
+	transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
 
 .site-shell .span-2 {
 	grid-column: span 2;
 }
 
+.site-shell .span-full {
+	grid-column: 1 / -1;
+}
+
 .site-shell main.grid > section h2 {
-	font-size: 0.7rem;
+	font-size: var(--text-caption);
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
 	color: var(--site-accent);
@@ -270,8 +324,28 @@ body {
 	transition: color 0.45s ease;
 }
 
+.site-shell main.grid > section.entry-card h2 {
+	font-family: var(--font-display);
+	font-size: 1.5rem;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	text-transform: none;
+	color: var(--site-text);
+	margin: 0 0 0.5rem;
+}
+
+.site-shell main.grid > section.entry-card h2 a {
+	color: inherit;
+	font-weight: inherit;
+	text-decoration: none;
+}
+
+.site-shell main.grid > section.entry-card h2 a:hover {
+	color: var(--site-accent);
+}
+
 .site-shell main.grid > section p {
-	font-size: 0.92rem;
+	font-size: var(--text-body);
 	line-height: 1.8;
 	color: var(--site-text);
 	margin: 0 0 0.75rem;
@@ -290,7 +364,7 @@ body {
 
 .site-shell section.location .country {
 	font-family: var(--font-display);
-	font-size: 1.4rem;
+	font-size: var(--text-location);
 	font-weight: 300;
 	line-height: 1.1;
 	margin-bottom: 0.2rem;
@@ -298,7 +372,7 @@ body {
 }
 
 .site-shell section.location .city {
-	font-size: 0.78rem;
+	font-size: var(--text-caption);
 	color: var(--site-text-muted);
 	transition: color 0.45s ease;
 }
@@ -312,6 +386,88 @@ body {
 	gap: 0.7rem;
 }
 
+.site-shell .skills-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-16);
+	margin: 0;
+}
+
+.site-shell .skills-list div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.site-shell .skills-list dt {
+	font-size: var(--text-caption);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--site-text-muted);
+}
+
+.site-shell .skills-list dd {
+	margin: 0;
+	font-size: var(--text-body);
+	line-height: 1.7;
+	color: var(--site-text);
+}
+
+.site-shell .entry-meta {
+	font-size: var(--text-caption);
+	letter-spacing: 0.04em;
+	color: var(--site-text-muted);
+	margin-bottom: var(--space-16);
+}
+
+.site-shell .detail-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-12);
+}
+
+.site-shell .detail-list li {
+	position: relative;
+	padding-left: 1.25rem;
+	font-size: var(--text-body);
+	line-height: 1.75;
+	color: var(--site-text);
+}
+
+.site-shell .detail-list li::before {
+	content: '';
+	position: absolute;
+	top: 0.8rem;
+	left: 0;
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: var(--radius-round);
+	background: var(--site-accent);
+}
+
+.site-shell .video-embed {
+	margin-top: var(--space-24);
+	border: 1px solid var(--site-border);
+	border-radius: calc(var(--radius-card) - 2px);
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.18);
+	box-shadow: 0 8px 24px var(--site-shadow);
+	transition:
+		border-color 0.45s ease,
+		box-shadow 0.45s ease,
+		background-color 0.45s ease;
+}
+
+.site-shell .video-embed iframe {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	border: 0;
+}
+
 .site-shell section.languages li {
 	display: flex;
 	align-items: center;
@@ -321,25 +477,29 @@ body {
 
 .site-shell section.languages li span {
 	flex: 1;
-	font-size: 0.85rem;
+	font-size: var(--text-body);
 	transition: color 0.45s ease;
 }
 
 .site-shell section.languages li em {
-	font-size: 0.7rem;
+	font-size: var(--text-caption);
 	color: var(--site-text-muted);
 	font-style: italic;
 	transition: color 0.45s ease;
 }
 
 .site-shell main.grid > section a {
-	color: inherit;
+	color: var(--site-accent);
+	font-weight: 500;
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
 	text-underline-offset: 0.18em;
-	text-decoration-color: rgba(122, 184, 128, 0.35);
+	text-decoration-color: rgba(122, 184, 128, 0.45);
 }
 
 .site-shell main.grid > section a:hover {
-	color: var(--site-accent);
+	color: var(--site-text);
+	text-decoration-color: var(--site-accent);
 }
 
 .site-shell .links {
@@ -357,7 +517,7 @@ body {
 	border-radius: var(--radius-pill);
 	color: var(--site-text);
 	text-decoration: none;
-	font-size: 0.8rem;
+	font-size: var(--text-body);
 	background: transparent;
 	transition:
 		border-color 0.45s ease,
@@ -373,7 +533,7 @@ body {
 
 .site-shell .links span {
 	color: var(--site-accent);
-	font-size: 0.75rem;
+	font-size: var(--text-caption);
 	transition: color 0.45s ease;
 }
 
@@ -388,7 +548,7 @@ body {
 }
 
 .site-shell footer span {
-	font-size: 0.75rem;
+	font-size: var(--text-caption);
 	color: var(--site-text-muted);
 	letter-spacing: 0.08em;
 	transition: color 0.45s ease;
@@ -427,11 +587,12 @@ body {
 }
 
 .site-shell .error-card h1 {
-	font-size: clamp(2rem, 6vw, 3.8rem);
+	font-size: clamp(2rem, 6vw, 4rem);
 	margin: 0 0 1rem;
 }
 
 .site-shell .error-message {
+	font-size: var(--text-body);
 	max-width: 34rem;
 	margin-bottom: 1.5rem;
 }
@@ -471,13 +632,22 @@ body {
 
 @media (max-width: 768px) {
 	.site-shell nav {
+		grid-template-columns: auto 1fr auto;
 		padding: 1rem var(--space-24);
+	}
+
+	.site-shell .page-links {
+		gap: var(--space-16);
 	}
 
 	.site-shell header.hero {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--space-24);
+		padding: var(--space-32) var(--space-24) var(--space-24);
+	}
+
+	.site-shell header.page-head {
 		padding: var(--space-32) var(--space-24) var(--space-24);
 	}
 

@@ -1,12 +1,14 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import me from '$lib/assets/me.jpg';
+	import resume from '$lib/assets/Rajan Singh Resume.pdf';
+	import me from '$lib/assets/me.jpeg';
 
 	interface Props {
 		data: PageData;
 	}
 
 	const socialLinks = [
+		{ label: 'Resume', href: resume },
 		{ label: 'GitHub', href: 'https://github.com/woahitsraj' },
 		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/woahitsraj/' },
 		{ label: 'Instagram', href: 'https://instagram.com/woahitsraj' },
@@ -66,15 +68,28 @@
 			always keen to try new things which got me hooked onto React and Svelte early.
 		</p>
 		<p>I'm an American 🇺🇸 and Canadian 🇨🇦 citizen but currently I call Sweden 🇸🇪 my home.</p>
-	</section>
-
-	<section class="reveal reveal-3">
-		<h2>Approach</h2>
 		<p>
 			I'm a strong believer in long periods of undistracted "deep work" as popularized by Cal
 			Newport to perform at a high level. I speak English natively and I speak Japanese 🇯🇵 and
 			Swedish 🇸🇪 at conversational fluency.
 		</p>
+	</section>
+
+	<section class="reveal reveal-3">
+		<h2>Skills</h2>
+		<dl class="skills-list">
+			<div>
+				<dt>Programming Languages</dt>
+				<dd>JavaScript, HTML, CSS, TypeScript, shell scripting</dd>
+			</div>
+			<div>
+				<dt>Frameworks and Tools</dt>
+				<dd>
+					React, Svelte, SvelteKit, Drizzle, tRPC, SQL, GraphQL, Node, Webpack, Git, Vite, Unix,
+					PWAs
+				</dd>
+			</div>
+		</dl>
 	</section>
 
 	<section class="location reveal reveal-4">
