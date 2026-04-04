@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import RevealScope from '$lib/RevealScope.svelte';
@@ -11,9 +11,12 @@
 
 	const LIGHT_THEME = '#f3ede3';
 	const DARK_THEME = '#15110d';
+	const homeHref = resolve('/');
+	const workHref = resolve('/work');
+	const experienceHref = resolve('/experience');
 
 	let { children, footerText = 'Rajan Singh' }: Props = $props();
-	let pathname = $derived(page.url.pathname);
+	let routeId = $derived(page.route.id);
 	let dark = $state(false);
 
 	function applyTheme(nextDark: boolean) {
@@ -52,10 +55,10 @@
 
 <div class="site-shell">
 	<nav class="site-shell__frame">
-		<a href={`${base}/`}>Home</a>
+		<a href={homeHref}>Home</a>
 		<div class="page-links">
-			<a href={`${base}/work`} class:active={pathname === `${base}/work`}>Work</a>
-			<a href={`${base}/experience`} class:active={pathname === `${base}/experience`}>Experience</a>
+			<a href={workHref} class:active={routeId === '/(main)/work'}>Work</a>
+			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>Experience</a>
 		</div>
 		<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
 			<span class="theme-toggle__glyph" aria-hidden="true">
@@ -65,7 +68,7 @@
 	</nav>
 
 	<div class="site-shell__page">
-		{#key pathname}
+		{#key page.url.pathname}
 			<RevealScope>
 				{@render children?.()}
 			</RevealScope>

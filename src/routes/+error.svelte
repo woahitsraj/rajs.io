@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import SiteShell from '$lib/SiteShell.svelte';
 
@@ -21,7 +22,7 @@
 			<h1>{status === 404 ? 'This page is off the map.' : 'Something went wrong.'}</h1>
 			<p class="error-message">{message}</p>
 			<div class="error-actions">
-				<a href="/">Back home</a>
+				<a href={resolve('/')}>Back home</a>
 			</div>
 		</section>
 	</main>
