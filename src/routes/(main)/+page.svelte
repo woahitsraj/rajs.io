@@ -145,7 +145,9 @@
 						<span class="link-icon" aria-hidden="true">
 							{#if isCustomIcon(link.icon)}
 								<svg class="stroke-icon" viewBox="0 0 24 24" focusable="false">
-									<path d="M8 3.5h6.25l4.25 4.25V19A1.5 1.5 0 0 1 17 20.5H8A1.5 1.5 0 0 1 6.5 19V5A1.5 1.5 0 0 1 8 3.5Z" />
+									<path
+										d="M8 3.5h6.25l4.25 4.25V19A1.5 1.5 0 0 1 17 20.5H8A1.5 1.5 0 0 1 6.5 19V5A1.5 1.5 0 0 1 8 3.5Z"
+									/>
 									<path d="M14.25 3.5V8h4.25" />
 									<path d="M9 12h6" />
 									<path d="M9 15h6" />
