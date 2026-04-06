@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import { extractLocaleFromUrl, locales, localizeHref } from '../paraglide/runtime.js';
 	import RevealScope from '$lib/RevealScope.svelte';
 
 	interface Props {
@@ -11,12 +11,19 @@
 
 	const LIGHT_THEME = '#f3ede3';
 	const DARK_THEME = '#15110d';
-	const homeHref = resolve('/');
-	const workHref = resolve('/work');
-	const experienceHref = resolve('/experience');
+	const localeLabels: Record<string, string> = {
+		en: 'EN',
+		sv: 'SV',
+		jp: 'JP',
+		es: 'ES'
+	};
 
 	let { children, footerText = 'Rajan Singh' }: Props = $props();
 	let routeId = $derived(page.route.id);
+	let currentLocale = $derived(extractLocaleFromUrl(page.url));
+	let homeHref = $derived(localizeHref('/', { locale: currentLocale }));
+	let workHref = $derived(localizeHref('/work', { locale: currentLocale }));
+	let experienceHref = $derived(localizeHref('/experience', { locale: currentLocale }));
 	let dark = $state(false);
 
 	function applyTheme(nextDark: boolean) {
@@ -60,11 +67,24 @@
 			<a href={workHref} class:active={routeId === '/(main)/work'}>Work</a>
 			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>Experience</a>
 		</div>
-		<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
-			<span class="theme-toggle__glyph" aria-hidden="true">
-				<span class="theme-toggle__dot"></span>
-			</span>
-		</button>
+		<div class="nav-controls">
+			<div class="locale-switcher" aria-label="Language picker">
+				{#each locales as locale (locale)}
+					<a
+						href={localizeHref(page.url.pathname, { locale })}
+						class:active={currentLocale === locale}
+						data-sveltekit-reload
+					>
+						{localeLabels[locale] ?? locale.toUpperCase()}
+					</a>
+				{/each}
+			</div>
+			<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
+				<span class="theme-toggle__glyph" aria-hidden="true">
+					<span class="theme-toggle__dot"></span>
+				</span>
+			</button>
+		</div>
 	</nav>
 
 	<div class="site-shell__page">

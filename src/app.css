@@ -265,6 +265,47 @@ html.js .reveal-scope:not(.visible) .reveal {
 	gap: var(--space-24);
 }
 
+.site-shell .nav-controls {
+	justify-self: end;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.site-shell .locale-switcher {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.2rem;
+	border: 1px solid var(--site-rule);
+	border-radius: var(--radius-pill);
+	background: color-mix(in srgb, var(--site-surface) 78%, var(--site-bg) 22%);
+	box-shadow: inset 0 1px 0 var(--site-ring);
+	transition:
+		border-color 0.45s ease,
+		background-color 0.45s ease,
+		box-shadow 0.45s ease;
+}
+
+.site-shell .locale-switcher a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.1rem;
+	padding: 0.35rem 0.55rem;
+	border-radius: var(--radius-pill);
+	color: var(--site-text-muted);
+	font-size: var(--text-caption);
+	letter-spacing: 0.1em;
+	text-decoration: none;
+}
+
+.site-shell .locale-switcher a:hover,
+.site-shell .locale-switcher a.active {
+	color: var(--site-accent);
+	background: color-mix(in srgb, var(--site-accent-soft) 74%, transparent);
+}
+
 .site-shell .page-links a {
 	font-size: var(--text-body);
 	color: var(--site-text-muted);
@@ -842,6 +883,19 @@ html.js .site-shell nav button.theme-toggle {
 
 	.site-shell .page-links {
 		gap: var(--space-16);
+	}
+
+	.site-shell .nav-controls {
+		gap: 0.5rem;
+	}
+
+	.site-shell .locale-switcher {
+		gap: 0.2rem;
+	}
+
+	.site-shell .locale-switcher a {
+		min-width: 1.9rem;
+		padding-inline: 0.45rem;
 	}
 
 	.site-shell header.hero {

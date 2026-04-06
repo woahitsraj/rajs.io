@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import SiteShell from '$lib/SiteShell.svelte';
+	import { localizeHref } from '../paraglide/runtime.js';
 
 	let status = $derived(page.status);
 	let message = $derived(
@@ -22,7 +22,7 @@
 			<h1>{status === 404 ? 'This page is off the map.' : 'Something went wrong.'}</h1>
 			<p class="error-message">{message}</p>
 			<div class="error-actions">
-				<a href={resolve('/')}>Back home</a>
+				<a href={localizeHref('/')}>Back home</a>
 			</div>
 		</section>
 	</main>
