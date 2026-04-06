@@ -5,12 +5,24 @@
 		children?: import('svelte').Snippet;
 	}
 
+	function isLocaleTransitionActive() {
+		return (
+			typeof document !== 'undefined' &&
+			document.documentElement.hasAttribute('data-locale-transition')
+		);
+	}
+
 	let { children }: Props = $props();
-	let visible = $state(false);
+	let visible = $state(isLocaleTransitionActive());
 	let revealFrame = 0;
 	let revealTimeout = 0;
 
 	onMount(() => {
+		if (isLocaleTransitionActive()) {
+			visible = true;
+			return;
+		}
+
 		revealFrame = requestAnimationFrame(() => {
 			revealTimeout = window.setTimeout(() => {
 				visible = true;

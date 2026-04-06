@@ -198,6 +198,24 @@ html.js .reveal-scope:not(.visible) .reveal {
 		transform var(--motion-enter);
 }
 
+html[data-locale-transition] .reveal-scope:not(.visible) .reveal {
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+
+html[data-locale-transition] .site-shell .reveal,
+html[data-locale-transition] .reveal-scope.visible .reveal-1,
+html[data-locale-transition] .reveal-scope.visible .reveal-2,
+html[data-locale-transition] .reveal-scope.visible .reveal-3,
+html[data-locale-transition] .reveal-scope.visible .reveal-4,
+html[data-locale-transition] .reveal-scope.visible .reveal-5 {
+	opacity: 1;
+	transform: translateY(0);
+	transition: none;
+	transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+
 .reveal-scope.visible .reveal-1,
 .reveal-scope.visible .reveal-2,
 .reveal-scope.visible .reveal-3,

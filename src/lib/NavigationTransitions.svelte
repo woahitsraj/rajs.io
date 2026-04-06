@@ -8,6 +8,7 @@
 	type BaffleFn = typeof baffleImport;
 
 	const BAFFLE_SELECTOR = '[data-baffle]';
+	const LOCALE_TRANSITION_ATTR = 'data-locale-transition';
 	const BAFFLE_OPTIONS = {
 		characters: '█▓▒░<>/[]{}*+',
 		speed: 45
@@ -23,6 +24,10 @@
 		return Array.from(document.querySelectorAll<HTMLElement>(BAFFLE_SELECTOR)).filter((element) =>
 			element.textContent?.trim()
 		);
+	}
+
+	function setLocaleTransitionState(active: boolean) {
+		document.documentElement.toggleAttribute(LOCALE_TRANSITION_ATTR, active);
 	}
 
 	async function runLocaleBaffle({ preNavigation }: { preNavigation: boolean }) {
@@ -58,6 +63,7 @@
 		const isLocaleChange = fromLocale !== toLocale;
 
 		if (isLocaleChange) {
+			setLocaleTransitionState(true);
 			await runLocaleBaffle({ preNavigation: true });
 			await setLocale(toLocale, { reload: false });
 
@@ -65,6 +71,7 @@
 				void (async () => {
 					await tick();
 					await runLocaleBaffle({ preNavigation: false });
+					setLocaleTransitionState(false);
 				})();
 			};
 		}
