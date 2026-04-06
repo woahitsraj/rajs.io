@@ -10,8 +10,9 @@
 	const BAFFLE_SELECTOR = '[data-baffle]';
 	const LOCALE_TRANSITION_ATTR = 'data-locale-transition';
 	const BAFFLE_OPTIONS = {
-		characters: '█▓▒░<>/[]{}*+',
-		speed: 45
+		characters:
+			'ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンÅåÄäÖöÁáÉéÍíÓóÚúÜüÑñAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz~!@#$%^&*()-+=[]{}|;:,./<>?',
+		speed: 50
 	};
 
 	let baffle: BaffleFn | undefined;
