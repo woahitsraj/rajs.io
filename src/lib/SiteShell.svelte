@@ -71,12 +71,26 @@
 				<button
 					class="theme-toggle"
 					class:is-dark={dark}
+					type="button"
 					onclick={toggle}
 					aria-label={m.theme_toggle_aria()}
+					aria-pressed={dark}
 				>
-					<span class="theme-toggle__glyph" aria-hidden="true">
-						<span class="theme-toggle__dot"></span>
-					</span>
+					<svg class="theme-toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
+						<circle class="theme-toggle__sun-core" cx="12" cy="12" r="4"></circle>
+						<g class="theme-toggle__rays">
+							<path d="M12 2.75v2.5"></path>
+							<path d="M12 18.75v2.5"></path>
+							<path d="m5.46 5.46 1.77 1.77"></path>
+							<path d="m16.77 16.77 1.77 1.77"></path>
+							<path d="M2.75 12h2.5"></path>
+							<path d="M18.75 12h2.5"></path>
+							<path d="m5.46 18.54 1.77-1.77"></path>
+							<path d="m16.77 7.23 1.77-1.77"></path>
+						</g>
+						<path class="theme-toggle__moon" d="M15.5 4.5a7.5 7.5 0 1 0 0 15 8 8 0 1 1 0-15Z"
+						></path>
+					</svg>
 				</button>
 			</div>
 		</nav>
