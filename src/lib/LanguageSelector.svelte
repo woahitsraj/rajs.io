@@ -79,7 +79,6 @@
 					class:active={currentLocale === locale}
 					role="menuitem"
 					aria-current={currentLocale === locale ? 'page' : undefined}
-					data-sveltekit-reload
 					onclick={close}
 				>
 					<span>{localeMarks[locale] ?? locale.toUpperCase()}</span>

@@ -22,10 +22,12 @@
 	<main class="error-page reveal reveal-1">
 		<section class="error-card">
 			<p class="error-code">{status}</p>
-			<h1>{status === 404 ? m.error_not_found_heading() : m.error_generic_description()}</h1>
-			<p class="error-message">{message}</p>
+			<h1 data-baffle>
+				{status === 404 ? m.error_not_found_heading() : m.error_generic_description()}
+			</h1>
+			<p class="error-message" data-baffle>{message}</p>
 			<div class="error-actions">
-				<a href={localizeHref('/')}>{m.error_back_home()}</a>
+				<a href={localizeHref('/')} data-baffle>{m.error_back_home()}</a>
 			</div>
 		</section>
 	</main>

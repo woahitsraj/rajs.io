@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      baffle:
+        specifier: ^0.3.6
+        version: 0.3.6
       simple-icons:
         specifier: ^16.14.0
         version: 16.14.0
@@ -563,6 +566,9 @@ packages:
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
+
+  baffle@0.3.6:
+    resolution: {integrity: sha512-EAae8dURqcjcuQOXdU69vvLX50NobtFyPwhCZGd40sz220E+4b47X8I24Uuj44bYoIY7ieNdgrtvhFdZM5/qag==}
 
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
@@ -1813,6 +1819,8 @@ snapshots:
   assertion-error@2.0.1: {}
 
   axobject-query@4.1.0: {}
+
+  baffle@0.3.6: {}
 
   balanced-match@4.0.4: {}
 

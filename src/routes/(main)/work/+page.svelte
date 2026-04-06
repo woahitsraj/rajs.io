@@ -29,9 +29,9 @@
 </svelte:head>
 
 <header class="page-head reveal reveal-1">
-	<p class="eyebrow">{m.work_head_eyebrow()}</p>
-	<h1>{m.work_head_heading()}</h1>
-	<p class="subtitle">{m.work_head_subtitle()}</p>
+	<p class="eyebrow" data-baffle>{m.work_head_eyebrow()}</p>
+	<h1 data-baffle>{m.work_head_heading()}</h1>
+	<p class="subtitle" data-baffle>{m.work_head_subtitle()}</p>
 </header>
 
 <main class="grid">
@@ -43,12 +43,14 @@
 			class:reveal-4={index === 2}
 		>
 			<h2>
-				<a href={project.href} target="_blank" rel="noopener noreferrer">{project.name}</a>
+				<a href={project.href} target="_blank" rel="noopener noreferrer" data-baffle
+					>{project.name}</a
+				>
 			</h2>
 			<p class="entry-meta">{project.stack}</p>
 			<ul class="detail-list">
 				{#each project.details as detail (detail)}
-					<li>{detail}</li>
+					<li data-baffle>{detail}</li>
 				{/each}
 			</ul>
 			{#if project.embed}

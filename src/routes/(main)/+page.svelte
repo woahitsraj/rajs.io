@@ -95,68 +95,73 @@
 		<img src={me} alt={m.profile_name()} />
 	</figure>
 	<div>
-		<p class="eyebrow">{m.home_eyebrow()}</p>
-		<h1>{m.profile_name_first()}<br /><em>{m.profile_name_last()}</em></h1>
-		<p class="subtitle">{m.home_subtitle()}</p>
+		<p class="eyebrow" data-baffle>{m.home_eyebrow()}</p>
+		<h1>
+			<span data-baffle>{m.profile_name_first()}</span><br /><em data-baffle
+				>{m.profile_name_last()}</em
+			>
+		</h1>
+		<p class="subtitle" data-baffle>{m.home_subtitle()}</p>
 	</div>
 </header>
 
 <main class="grid">
 	<section class="span-2 reveal reveal-2">
-		<h2>{m.home_about_heading()}</h2>
+		<h2 data-baffle>{m.home_about_heading()}</h2>
 		<p>
-			{m.home_about_p1_before()}<a href="https://withglide.com/">Glide</a>{m.home_about_p1_after()}
+			<span data-baffle>{m.home_about_p1_before()}</span><a href="https://withglide.com/">Glide</a
+			><span data-baffle>{m.home_about_p1_after()}</span>
 		</p>
-		<p>{m.home_about_p2()}</p>
-		<p>{m.home_about_p3()}</p>
-		<p>{m.home_about_p4()}</p>
+		<p data-baffle>{m.home_about_p2()}</p>
+		<p data-baffle>{m.home_about_p3()}</p>
+		<p data-baffle>{m.home_about_p4()}</p>
 	</section>
 
 	<section class="reveal reveal-3">
-		<h2>{m.home_skills_heading()}</h2>
+		<h2 data-baffle>{m.home_skills_heading()}</h2>
 		<dl class="skills-list">
 			<div>
-				<dt>{m.home_skills_programming_languages()}</dt>
-				<dd>{m.home_skills_programming_languages_list()}</dd>
+				<dt data-baffle>{m.home_skills_programming_languages()}</dt>
+				<dd data-baffle>{m.home_skills_programming_languages_list()}</dd>
 			</div>
 			<div>
-				<dt>{m.home_skills_frameworks_tools()}</dt>
-				<dd>{m.home_skills_frameworks_tools_list()}</dd>
+				<dt data-baffle>{m.home_skills_frameworks_tools()}</dt>
+				<dd data-baffle>{m.home_skills_frameworks_tools_list()}</dd>
 			</div>
 		</dl>
 	</section>
 
 	<section class="location reveal reveal-4">
-		<h2>{m.home_location_heading()}</h2>
+		<h2 data-baffle>{m.home_location_heading()}</h2>
 		<p class="flag" aria-hidden="true">{locationFlag}</p>
-		<p class="country">{locationCountry}</p>
-		<p class="city">{locationCity}</p>
+		<p class="country" data-baffle>{locationCountry}</p>
+		<p class="city" data-baffle>{locationCity}</p>
 	</section>
 
 	<section class="languages reveal reveal-5">
-		<h2>{m.home_languages_heading()}</h2>
+		<h2 data-baffle>{m.home_languages_heading()}</h2>
 		<ul>
 			<li>
-				<span>{m.home_language_english()}</span>
-				<em>{m.home_language_native()}</em>
+				<span data-baffle>{m.home_language_english()}</span>
+				<em data-baffle>{m.home_language_native()}</em>
 			</li>
 			<li>
-				<span>{m.home_language_japanese()}</span>
-				<em>{m.home_language_conversational()}</em>
+				<span data-baffle>{m.home_language_japanese()}</span>
+				<em data-baffle>{m.home_language_conversational()}</em>
 			</li>
 			<li>
-				<span>{m.home_language_swedish()}</span>
-				<em>{m.home_language_conversational()}</em>
+				<span data-baffle>{m.home_language_swedish()}</span>
+				<em data-baffle>{m.home_language_conversational()}</em>
 			</li>
 			<li>
-				<span>{m.home_language_spanish()}</span>
-				<em>{m.home_language_elementary()}</em>
+				<span data-baffle>{m.home_language_spanish()}</span>
+				<em data-baffle>{m.home_language_elementary()}</em>
 			</li>
 		</ul>
 	</section>
 
 	<section class="reveal reveal-5">
-		<h2>{m.home_connect_heading()}</h2>
+		<h2 data-baffle>{m.home_connect_heading()}</h2>
 		<div class="links">
 			{#each socialLinks as link (link.href)}
 				<a href={link.href} target="_blank" rel="noopener noreferrer" class:text-only={!link.icon}>
@@ -178,7 +183,7 @@
 							{/if}
 						</span>
 					{/if}
-					<span class="link-label">{link.label}</span>
+					<span class="link-label" data-baffle>{link.label}</span>
 				</a>
 			{/each}
 		</div>

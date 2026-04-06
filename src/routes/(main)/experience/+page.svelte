@@ -46,9 +46,9 @@
 </svelte:head>
 
 <header class="page-head reveal reveal-1">
-	<p class="eyebrow">{m.experience_head_eyebrow()}</p>
-	<h1>{m.experience_head_heading()}</h1>
-	<p class="subtitle">{m.experience_head_subtitle()}</p>
+	<p class="eyebrow" data-baffle>{m.experience_head_eyebrow()}</p>
+	<h1 data-baffle>{m.experience_head_heading()}</h1>
+	<p class="subtitle" data-baffle>{m.experience_head_subtitle()}</p>
 </header>
 
 <main class="grid">
@@ -60,12 +60,15 @@
 			class:reveal-4={index === 2}
 			class:reveal-5={index >= 3}
 		>
-			<h2>{item.role}</h2>
-			<p class="entry-meta">{item.company} <span aria-hidden="true">·</span> {item.period}</p>
+			<h2 data-baffle>{item.role}</h2>
+			<p class="entry-meta">
+				<span data-baffle>{item.company}</span> <span aria-hidden="true">·</span>
+				<span data-baffle>{item.period}</span>
+			</p>
 			{#if item.details.length > 0}
 				<ul class="detail-list">
 					{#each item.details as detail (detail)}
-						<li>{detail}</li>
+						<li data-baffle>{detail}</li>
 					{/each}
 				</ul>
 			{/if}

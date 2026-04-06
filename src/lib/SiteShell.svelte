@@ -56,39 +56,41 @@
 	}
 </script>
 
-<div class="site-shell">
-	<nav class="site-shell__frame">
-		<a href={homeHref}>{m.nav_home()}</a>
-		<div class="page-links">
-			<a href={workHref} class:active={routeId === '/(main)/work'}>{m.nav_work()}</a>
-			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>
-				{m.nav_experience()}
-			</a>
-		</div>
-		<div class="nav-controls">
-			<LanguageSelector />
-			<button
-				class="theme-toggle"
-				class:is-dark={dark}
-				onclick={toggle}
-				aria-label={m.theme_toggle_aria()}
-			>
-				<span class="theme-toggle__glyph" aria-hidden="true">
-					<span class="theme-toggle__dot"></span>
-				</span>
-			</button>
-		</div>
-	</nav>
+{#key currentLocale}
+	<div class="site-shell">
+		<nav class="site-shell__frame">
+			<a href={homeHref} data-baffle>{m.nav_home()}</a>
+			<div class="page-links">
+				<a href={workHref} class:active={routeId === '/(main)/work'} data-baffle>{m.nav_work()}</a>
+				<a href={experienceHref} class:active={routeId === '/(main)/experience'} data-baffle>
+					{m.nav_experience()}
+				</a>
+			</div>
+			<div class="nav-controls">
+				<LanguageSelector />
+				<button
+					class="theme-toggle"
+					class:is-dark={dark}
+					onclick={toggle}
+					aria-label={m.theme_toggle_aria()}
+				>
+					<span class="theme-toggle__glyph" aria-hidden="true">
+						<span class="theme-toggle__dot"></span>
+					</span>
+				</button>
+			</div>
+		</nav>
 
-	<div class="site-shell__page">
-		{#key page.url.pathname}
-			<RevealScope>
-				{@render children?.()}
-			</RevealScope>
-		{/key}
+		<div class="site-shell__page">
+			{#key page.url.pathname}
+				<RevealScope>
+					{@render children?.()}
+				</RevealScope>
+			{/key}
+		</div>
+
+		<footer class="site-shell__frame">
+			<span data-baffle>{footerText}</span>
+		</footer>
 	</div>
-
-	<footer class="site-shell__frame">
-		<span>{footerText}</span>
-	</footer>
-</div>
+{/key}
