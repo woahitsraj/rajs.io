@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import { m } from '../paraglide/messages.js';
 	import { extractLocaleFromUrl, localizeHref } from '../paraglide/runtime.js';
 	import RevealScope from '$lib/RevealScope.svelte';
 	import LanguageSelector from '$lib/LanguageSelector.svelte';
@@ -13,7 +14,7 @@
 	const LIGHT_THEME = '#f3ede3';
 	const DARK_THEME = '#15110d';
 
-	let { children, footerText = 'Rajan Singh' }: Props = $props();
+	let { children, footerText = m.profile_name() }: Props = $props();
 	let routeId = $derived(page.route.id);
 	let currentLocale = $derived(extractLocaleFromUrl(page.url));
 	let homeHref = $derived(localizeHref('/', { locale: currentLocale }));
@@ -57,14 +58,21 @@
 
 <div class="site-shell">
 	<nav class="site-shell__frame">
-		<a href={homeHref}>Home</a>
+		<a href={homeHref}>{m.nav_home()}</a>
 		<div class="page-links">
-			<a href={workHref} class:active={routeId === '/(main)/work'}>Work</a>
-			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>Experience</a>
+			<a href={workHref} class:active={routeId === '/(main)/work'}>{m.nav_work()}</a>
+			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>
+				{m.nav_experience()}
+			</a>
 		</div>
 		<div class="nav-controls">
 			<LanguageSelector />
-			<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
+			<button
+				class="theme-toggle"
+				class:is-dark={dark}
+				onclick={toggle}
+				aria-label={m.theme_toggle_aria()}
+			>
 				<span class="theme-toggle__glyph" aria-hidden="true">
 					<span class="theme-toggle__dot"></span>
 				</span>

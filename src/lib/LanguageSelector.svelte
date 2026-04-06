@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import { m } from '../paraglide/messages.js';
 	import { extractLocaleFromUrl, locales, localizeHref } from '../paraglide/runtime.js';
 
 	const localeMarks: Record<string, string> = {
@@ -62,7 +63,7 @@
 		class="language-selector__trigger"
 		aria-haspopup="menu"
 		aria-expanded={open}
-		aria-label={`Selected language: ${selectedMark}`}
+		aria-label={m.language_selector_aria()}
 		onclick={toggle}
 	>
 		<span class="language-selector__code">{selectedMark}</span>
@@ -70,7 +71,7 @@
 	</button>
 
 	<div class="language-selector__menu" class:open>
-		<div class="language-selector__panel" role="menu" aria-label="Select language">
+		<div class="language-selector__panel" role="menu" aria-label={m.language_selector_menu_aria()}>
 			{#each locales as locale (locale)}
 				<a
 					href={localizeHref(currentPath, { locale })}

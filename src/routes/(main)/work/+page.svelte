@@ -1,42 +1,37 @@
 <script lang="ts">
+	import { m } from '../../../paraglide/messages.js';
+
 	const projects = [
 		{
 			name: 'Svelte Summit Partial Hydration Talk',
 			href: 'https://youtu.be/pJcbZr5VlV4?t=28774',
 			embed: 'https://www.youtube.com/embed/pJcbZr5VlV4?start=28774',
 			stack: 'Svelte, SvelteKit, Vite, TypeScript',
-			details: [
-				'Gave a talk at the first in-person Svelte Summit in fall 2022 about partial hydration to improve performance in e-commerce sites.'
-			]
+			details: [m.work_project_1_detail_1()]
 		},
 		{
 			name: 'Flattered',
 			href: 'http://flattered.se/',
 			stack: 'Svelte, TypeScript, GraphQL, Node',
-			details: [
-				'Fast, responsive, and stylish e-commerce site built with cutting-edge web technology.',
-				'Handled localization, internationalization, geo-IP redirect, currency formatting, SEO, Google Tag Manager, and Google Analytics.'
-			]
+			details: [m.work_project_2_detail_1(), m.work_project_2_detail_2()]
 		},
 		{
 			name: 'Sweden e-commerce template',
 			href: 'https://www.demostore.se/',
 			stack: 'React, TypeScript, Apollo, GraphQL, Node',
-			details: [
-				'Developed a re-stylable template used by one UI library with server-side rendering, analytics, and many other features used by one of Sweden’s largest e-commerce providers.'
-			]
+			details: [m.work_project_3_detail_1()]
 		}
 	];
 </script>
 
 <svelte:head>
-	<title>Work | Rajan Singh</title>
+	<title>{m.work_title()} | {m.profile_name()}</title>
 </svelte:head>
 
 <header class="page-head reveal reveal-1">
-	<p class="eyebrow">Stuff I&apos;ve done</p>
-	<h1>Work</h1>
-	<p class="subtitle">Selected projects, web sites, and talks.</p>
+	<p class="eyebrow">{m.work_head_eyebrow()}</p>
+	<h1>{m.work_head_heading()}</h1>
+	<p class="subtitle">{m.work_head_subtitle()}</p>
 </header>
 
 <main class="grid">

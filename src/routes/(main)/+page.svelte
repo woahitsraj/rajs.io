@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import {
 		siBluesky,
 		siGithub,
@@ -9,6 +10,8 @@
 		siX
 	} from 'simple-icons';
 	import type { SimpleIcon } from 'simple-icons';
+	import { m } from '../../paraglide/messages.js';
+	import { extractLocaleFromUrl } from '../../paraglide/runtime.js';
 	import type { PageData } from './$types';
 	import resume from '$lib/assets/Rajan Singh Resume.pdf';
 	import me from '$lib/assets/me.jpeg';
@@ -25,17 +28,12 @@
 		icon?: LinkIcon;
 	}
 
-	const socialLinks: SocialLink[] = [
-		{ label: 'Resume', href: resume, icon: 'resume' },
-		{ label: 'GitHub', href: 'https://github.com/woahitsraj', icon: siGithub },
-		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/woahitsraj/' },
-		{ label: 'Bluesky', href: 'https://bsky.app/profile/woahitsraj.com', icon: siBluesky },
-		{ label: 'Goodreads', href: 'https://www.goodreads.com/woahitsraj', icon: siGoodreads },
-		{ label: 'Letterboxd', href: 'https://letterboxd.com/woahitsraj/', icon: siLetterboxd },
-		{ label: 'Instagram', href: 'https://instagram.com/woahitsraj', icon: siInstagram },
-		{ label: 'Threads', href: 'https://www.threads.net/@woahitsraj', icon: siThreads },
-		{ label: 'Twitter', href: 'https://twitter.com/woahitsraj', icon: siX }
-	];
+	const localeTags: Record<string, string> = {
+		en: 'en',
+		sv: 'sv',
+		jp: 'ja',
+		es: 'es'
+	};
 
 	function isCustomIcon(icon?: LinkIcon): icon is 'resume' {
 		return typeof icon === 'string';
@@ -52,92 +50,113 @@
 	}
 
 	let { data }: Props = $props();
+	let currentLocale = $derived(extractLocaleFromUrl(page.url) ?? 'en');
+	let socialLinks = $derived([
+		{ label: m.link_resume(), href: resume, icon: 'resume' },
+		{ label: 'GitHub', href: 'https://github.com/woahitsraj', icon: siGithub },
+		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/woahitsraj/' },
+		{ label: 'Bluesky', href: 'https://bsky.app/profile/woahitsraj.com', icon: siBluesky },
+		{ label: 'Goodreads', href: 'https://www.goodreads.com/woahitsraj', icon: siGoodreads },
+		{ label: 'Letterboxd', href: 'https://letterboxd.com/woahitsraj/', icon: siLetterboxd },
+		{ label: 'Instagram', href: 'https://instagram.com/woahitsraj', icon: siInstagram },
+		{ label: 'Threads', href: 'https://www.threads.net/@woahitsraj', icon: siThreads },
+		{ label: 'Twitter', href: 'https://twitter.com/woahitsraj', icon: siX }
+	] satisfies SocialLink[]);
 	let city = $derived(data.city);
 	let country = $derived(data.country);
 	let countryCode = $derived(data.countryCode);
-	let locationCountry = $derived(country ?? 'Sweden');
-	let locationCity = $derived(city ?? 'Gothenburg');
+	let locationCountry = $derived.by(() => {
+		if (!countryCode) {
+			return country ?? m.home_location_fallback_country();
+		}
+
+		try {
+			const displayNames = new Intl.DisplayNames([localeTags[currentLocale] ?? 'en'], {
+				type: 'region'
+			});
+
+			return (
+				displayNames.of(countryCode.toUpperCase()) ?? country ?? m.home_location_fallback_country()
+			);
+		} catch {
+			return country ?? m.home_location_fallback_country();
+		}
+	});
+	let locationCity = $derived(city ?? m.home_location_fallback_city());
 	let locationFlag = $derived(flagFromCountryCode(countryCode ?? 'SE'));
 </script>
 
 <svelte:head>
-	<title>Rajan Singh</title>
+	<title>{m.profile_name()}</title>
 </svelte:head>
 
 <header class="hero reveal reveal-1">
 	<figure class="portrait">
-		<img src={me} alt="Rajan Singh" />
+		<img src={me} alt={m.profile_name()} />
 	</figure>
 	<div>
-		<p class="eyebrow">Hi! I'm</p>
-		<h1>Rajan<br /><em>Singh</em></h1>
-		<p class="subtitle">Full-stack developer</p>
+		<p class="eyebrow">{m.home_eyebrow()}</p>
+		<h1>{m.profile_name_first()}<br /><em>{m.profile_name_last()}</em></h1>
+		<p class="subtitle">{m.home_subtitle()}</p>
 	</div>
 </header>
 
 <main class="grid">
 	<section class="span-2 reveal reveal-2">
-		<h2>About</h2>
+		<h2>{m.home_about_heading()}</h2>
 		<p>
-			I'm a developer currently at <a href="https://withglide.com/">Glide</a>. I'm experienced in
-			React/Svelte and Typescript but I'm always learning new things. For me programming isn't just
-			a career, it's been a lifelong hobby.
+			{m.home_about_p1_before()}<a href="https://withglide.com/">Glide</a>{m.home_about_p1_after()}
 		</p>
-		<p>
-			I attend development related meet-ups and conferences, listen to development podcast and I am
-			always keen to try new things which got me hooked onto React and Svelte early.
-		</p>
-		<p>I'm an American 🇺🇸 and Canadian 🇨🇦 citizen but currently I call Sweden 🇸🇪 my home.</p>
-		<p>
-			I'm a strong believer in long periods of undistracted "deep work" to get things done. I speak
-			English natively and I speak Japanese 🇯🇵 and Swedish 🇸🇪 at conversational fluency.
-		</p>
+		<p>{m.home_about_p2()}</p>
+		<p>{m.home_about_p3()}</p>
+		<p>{m.home_about_p4()}</p>
 	</section>
 
 	<section class="reveal reveal-3">
-		<h2>Skills</h2>
+		<h2>{m.home_skills_heading()}</h2>
 		<dl class="skills-list">
 			<div>
-				<dt>Programming Languages</dt>
-				<dd>TypeScript, JavaScript, HTML, CSS, Bash</dd>
+				<dt>{m.home_skills_programming_languages()}</dt>
+				<dd>{m.home_skills_programming_languages_list()}</dd>
 			</div>
 			<div>
-				<dt>Frameworks and Tools</dt>
-				<dd>
-					React, Svelte, SvelteKit, Drizzle, tRPC, SQL, GraphQL, Node, Webpack, Git, Vite, Unix,
-					PWAs
-				</dd>
+				<dt>{m.home_skills_frameworks_tools()}</dt>
+				<dd>{m.home_skills_frameworks_tools_list()}</dd>
 			</div>
 		</dl>
 	</section>
 
 	<section class="location reveal reveal-4">
-		<h2>Location</h2>
+		<h2>{m.home_location_heading()}</h2>
 		<p class="flag" aria-hidden="true">{locationFlag}</p>
 		<p class="country">{locationCountry}</p>
 		<p class="city">{locationCity}</p>
 	</section>
 
 	<section class="languages reveal reveal-5">
-		<h2>Languages</h2>
+		<h2>{m.home_languages_heading()}</h2>
 		<ul>
 			<li>
-				<span>🇺🇸 English</span>
-				<em>Native</em>
+				<span>{m.home_language_english()}</span>
+				<em>{m.home_language_native()}</em>
 			</li>
 			<li>
-				<span>🇯🇵 Japanese</span>
-				<em>Conversational</em>
+				<span>{m.home_language_japanese()}</span>
+				<em>{m.home_language_conversational()}</em>
 			</li>
 			<li>
-				<span>🇸🇪 Swedish</span>
-				<em>Conversational</em>
+				<span>{m.home_language_swedish()}</span>
+				<em>{m.home_language_conversational()}</em>
+			</li>
+			<li>
+				<span>{m.home_language_spanish()}</span>
+				<em>{m.home_language_elementary()}</em>
 			</li>
 		</ul>
 	</section>
 
 	<section class="reveal reveal-5">
-		<h2>Connect</h2>
+		<h2>{m.home_connect_heading()}</h2>
 		<div class="links">
 			{#each socialLinks as link (link.href)}
 				<a href={link.href} target="_blank" rel="noopener noreferrer" class:text-only={!link.icon}>
