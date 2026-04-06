@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { extractLocaleFromUrl, locales, localizeHref } from '../paraglide/runtime.js';
+	import { extractLocaleFromUrl, localizeHref } from '../paraglide/runtime.js';
 	import RevealScope from '$lib/RevealScope.svelte';
+	import LanguageSelector from '$lib/LanguageSelector.svelte';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -11,12 +12,6 @@
 
 	const LIGHT_THEME = '#f3ede3';
 	const DARK_THEME = '#15110d';
-	const localeLabels: Record<string, string> = {
-		en: 'EN',
-		sv: 'SV',
-		jp: 'JP',
-		es: 'ES'
-	};
 
 	let { children, footerText = 'Rajan Singh' }: Props = $props();
 	let routeId = $derived(page.route.id);
@@ -68,17 +63,7 @@
 			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>Experience</a>
 		</div>
 		<div class="nav-controls">
-			<div class="locale-switcher" aria-label="Language picker">
-				{#each locales as locale (locale)}
-					<a
-						href={localizeHref(page.url.pathname, { locale })}
-						class:active={currentLocale === locale}
-						data-sveltekit-reload
-					>
-						{localeLabels[locale] ?? locale.toUpperCase()}
-					</a>
-				{/each}
-			</div>
+			<LanguageSelector />
 			<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
 				<span class="theme-toggle__glyph" aria-hidden="true">
 					<span class="theme-toggle__dot"></span>
