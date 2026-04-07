@@ -1,4 +1,7 @@
 <script lang="ts">
+	import EntryCard from '$lib/EntryCard.svelte';
+	import PageGrid from '$lib/PageGrid.svelte';
+	import PageIntro from '$lib/PageIntro.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	const projects = [
@@ -22,48 +25,33 @@
 			details: [m.work_project_3_detail_1()]
 		}
 	];
+
+	const revealClasses = ['reveal-2', 'reveal-3', 'reveal-4'];
+
+	function cardRevealClass(index: number) {
+		return revealClasses[index] ?? 'reveal-5';
+	}
 </script>
 
 <svelte:head>
 	<title>{m.work_title()} | {m.profile_name()}</title>
 </svelte:head>
 
-<header class="page-head reveal reveal-1">
-	<p class="eyebrow" data-baffle>{m.work_head_eyebrow()}</p>
-	<h1 data-baffle>{m.work_head_heading()}</h1>
-	<p class="subtitle" data-baffle>{m.work_head_subtitle()}</p>
-</header>
+<PageIntro
+	eyebrow={m.work_head_eyebrow()}
+	heading={m.work_head_heading()}
+	subtitle={m.work_head_subtitle()}
+/>
 
-<main class="grid">
+<PageGrid>
 	{#each projects as project, index (project.name)}
-		<section
-			class="span-full entry-card reveal"
-			class:reveal-2={index === 0}
-			class:reveal-3={index === 1}
-			class:reveal-4={index === 2}
-		>
-			<h2>
-				<a href={project.href} target="_blank" rel="noopener noreferrer" data-baffle
-					>{project.name}</a
-				>
-			</h2>
-			<p class="entry-meta">{project.stack}</p>
-			<ul class="detail-list">
-				{#each project.details as detail (detail)}
-					<li data-baffle>{detail}</li>
-				{/each}
-			</ul>
-			{#if project.embed}
-				<div class="video-embed">
-					<iframe
-						src={project.embed}
-						title={project.name}
-						loading="lazy"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-						allowfullscreen
-					></iframe>
-				</div>
-			{/if}
-		</section>
+		<EntryCard
+			title={project.name}
+			href={project.href}
+			metaParts={[project.stack]}
+			details={project.details}
+			embed={project.embed}
+			revealClass={cardRevealClass(index)}
+		/>
 	{/each}
-</main>
+</PageGrid>

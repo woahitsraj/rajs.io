@@ -1,4 +1,7 @@
 <script lang="ts">
+	import EntryCard from '$lib/EntryCard.svelte';
+	import PageGrid from '$lib/PageGrid.svelte';
+	import PageIntro from '$lib/PageIntro.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	const experience = [
@@ -39,39 +42,32 @@
 			details: []
 		}
 	];
+
+	const revealClasses = ['reveal-2', 'reveal-3', 'reveal-4'];
+
+	function cardRevealClass(index: number) {
+		return revealClasses[index] ?? 'reveal-5';
+	}
 </script>
 
 <svelte:head>
 	<title>{m.experience_title()} | {m.profile_name()}</title>
 </svelte:head>
 
-<header class="page-head reveal reveal-1">
-	<p class="eyebrow" data-baffle>{m.experience_head_eyebrow()}</p>
-	<h1 data-baffle>{m.experience_head_heading()}</h1>
-	<p class="subtitle" data-baffle>{m.experience_head_subtitle()}</p>
-</header>
+<PageIntro
+	eyebrow={m.experience_head_eyebrow()}
+	heading={m.experience_head_heading()}
+	subtitle={m.experience_head_subtitle()}
+/>
 
-<main class="grid">
+<PageGrid>
 	{#each experience as item, index (item.role + item.company + item.period)}
-		<section
-			class="span-full entry-card reveal"
-			class:reveal-2={index === 0}
-			class:reveal-3={index === 1}
-			class:reveal-4={index === 2}
-			class:reveal-5={index >= 3}
-		>
-			<h2 data-baffle>{item.role}</h2>
-			<p class="entry-meta">
-				<span data-baffle>{item.company}</span> <span aria-hidden="true">·</span>
-				<span data-baffle>{item.period}</span>
-			</p>
-			{#if item.details.length > 0}
-				<ul class="detail-list">
-					{#each item.details as detail (detail)}
-						<li data-baffle>{detail}</li>
-					{/each}
-				</ul>
-			{/if}
-		</section>
+		<EntryCard
+			title={item.role}
+			metaParts={[item.company, item.period]}
+			metaBaffle={true}
+			details={item.details}
+			revealClass={cardRevealClass(index)}
+		/>
 	{/each}
-</main>
+</PageGrid>
