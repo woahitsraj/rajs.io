@@ -440,31 +440,44 @@ html.js .site-shell nav button.theme-toggle {
 	display: flex;
 }
 
-.site-shell .theme-toggle__glyph {
-	width: 1rem;
-	height: 1rem;
-	border-radius: var(--radius-round);
-	box-shadow: inset 0 0 0 1.5px currentColor;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: box-shadow 0.25s ease;
+.site-shell .theme-toggle__icon {
+	width: 0.8rem;
+	height: 0.8rem;
+	max-width: 100%;
+	max-height: 100%;
+	display: block;
+	overflow: hidden;
+	flex-shrink: 0;
 }
 
-.site-shell .theme-toggle__dot {
-	width: 6px;
-	height: 6px;
-	border-radius: var(--radius-round);
-	background: currentColor;
-	transition:
-		transform 0.25s ease,
-		opacity 0.25s ease,
-		background-color 0.25s ease;
+.site-shell .theme-toggle__sun *,
+.site-shell .theme-toggle__moon * {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.75;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }
 
-.site-shell nav button.theme-toggle.is-dark .theme-toggle__dot {
-	transform: scale(0);
+.site-shell .theme-toggle__sun,
+.site-shell .theme-toggle__moon {
+	transform-origin: 12px 12px;
+}
+
+.site-shell .theme-toggle__sun {
+	opacity: 1;
+}
+
+.site-shell .theme-toggle__moon {
 	opacity: 0;
+}
+
+.site-shell nav button.theme-toggle.is-dark .theme-toggle__sun {
+	opacity: 0;
+}
+
+.site-shell nav button.theme-toggle.is-dark .theme-toggle__moon {
+	opacity: 1;
 }
 
 .site-shell header.hero {
