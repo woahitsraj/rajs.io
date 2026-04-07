@@ -10,8 +10,8 @@
 		siX
 	} from 'simple-icons';
 	import type { SimpleIcon } from 'simple-icons';
-	import { m } from '../../paraglide/messages.js';
-	import { extractLocaleFromUrl } from '../../paraglide/runtime.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { extractLocaleFromUrl } from '$lib/paraglide/runtime.js';
 	import type { PageData } from './$types';
 	import resume from '$lib/assets/Rajan Singh Resume.pdf';
 	import me from '$lib/assets/me.jpeg';
