@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import SiteShell from '$lib/SiteShell.svelte';
-	import { m } from '../paraglide/messages.js';
-	import { localizeHref } from '../paraglide/runtime.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime.js';
 
 	let status = $derived(page.status);
 	let message = $derived(

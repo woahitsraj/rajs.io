@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { m } from '../paraglide/messages.js';
-	import { extractLocaleFromUrl, localizeHref } from '../paraglide/runtime.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { extractLocaleFromUrl, localizeHref } from '$lib/paraglide/runtime.js';
 	import RevealScope from '$lib/RevealScope.svelte';
 	import LanguageSelector from '$lib/LanguageSelector.svelte';
 

@@ -2,7 +2,7 @@
 	import { onNavigate } from '$app/navigation';
 	import { tick } from 'svelte';
 	import { onMount } from 'svelte';
-	import { baseLocale, extractLocaleFromUrl, setLocale } from '../paraglide/runtime.js';
+	import { baseLocale, extractLocaleFromUrl, setLocale } from '$lib/paraglide/runtime.js';
 	import type baffleImport from 'baffle';
 
 	type BaffleFn = typeof baffleImport;
