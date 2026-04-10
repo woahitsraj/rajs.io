@@ -7,7 +7,7 @@
 	const localeMarks: Record<string, string> = {
 		en: 'EN',
 		sv: 'SV',
-		jp: 'JP',
+		ja: 'JA',
 		es: 'ES'
 	};
 

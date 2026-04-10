@@ -36,6 +36,14 @@ function hasLocalizedRoute(routes, src) {
 	return routes.some((route) => route.src === src);
 }
 
+function getLegacyLocaleAliases(locales) {
+	if (locales.includes('ja')) {
+		return { jp: 'ja' };
+	}
+
+	return {};
+}
+
 try {
 	const [config, inlangSettings] = await Promise.all([
 		readJson(configPath),
@@ -43,6 +51,7 @@ try {
 	]);
 
 	const locales = inlangSettings.locales.filter((locale) => locale !== inlangSettings.baseLocale);
+	const legacyLocaleAliases = getLegacyLocaleAliases(locales);
 
 	if (locales.length === 0) process.exit(0);
 
@@ -85,6 +94,37 @@ try {
 		});
 	}
 
+	for (const legacyLocale of Object.keys(legacyLocaleAliases)) {
+		const rootSrc = `^/${escapeRegex(legacyLocale)}/?$`;
+		if (rootPageRoute && !hasLocalizedRoute(config.routes, rootSrc)) {
+			extraRoutes.push({
+				src: rootSrc,
+				dest: withPathname(rootPageRoute.dest, `/${legacyLocale}`)
+			});
+		}
+
+		const dataSrc = `^/${escapeRegex(legacyLocale)}/__data.json$`;
+		if (rootDataRoute && !hasLocalizedRoute(config.routes, dataSrc)) {
+			extraRoutes.push({
+				src: dataSrc,
+				dest: withPathname(rootDataRoute.dest, `/${legacyLocale}`)
+			});
+		}
+
+		for (const segment of ['experience', 'work']) {
+			const baseRoute = config.routes.find((route) => route.src === `^/${segment}/?(?:/__data.json)?$`);
+			if (!baseRoute) continue;
+
+			const src = `^/${escapeRegex(legacyLocale)}/${segment}/?(?:/__data.json)?$`;
+			if (hasLocalizedRoute(config.routes, src)) continue;
+
+			extraRoutes.push({
+				src,
+				dest: withPathname(baseRoute.dest, `/${legacyLocale}/${segment}`)
+			});
+		}
+	}
+
 	if (extraRoutes.length === 0) process.exit(0);
 
 	const inserted = insertBeforeCatchall(config.routes, extraRoutes);
@@ -93,7 +133,15 @@ try {
 	}
 
 	await fs.writeFile(configPath, `${JSON.stringify(config, null, '\t')}\n`);
-	console.log(`Patched Vercel routes for localized paths: ${locales.join(', ')}`);
+	console.log(
+		`Patched Vercel routes for localized paths: ${locales.join(', ')}${
+			Object.keys(legacyLocaleAliases).length > 0
+				? `; legacy aliases: ${Object.entries(legacyLocaleAliases)
+						.map(([from, to]) => `${from}->${to}`)
+						.join(', ')}`
+				: ''
+		}`
+	);
 } catch (error) {
 	if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
 		process.exit(0);

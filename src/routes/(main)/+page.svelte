@@ -24,13 +24,6 @@
 
 	type LinkIcon = Pick<SimpleIcon, 'path'> | 'resume';
 
-	const localeTags: Record<string, string> = {
-		en: 'en',
-		sv: 'sv',
-		jp: 'ja',
-		es: 'es'
-	};
-
 	function flagFromCountryCode(code?: string) {
 		if (!code || code.length !== 2) return '🇸🇪';
 		return String.fromCodePoint(
@@ -63,7 +56,7 @@
 		}
 
 		try {
-			const displayNames = new Intl.DisplayNames([localeTags[currentLocale] ?? 'en'], {
+			const displayNames = new Intl.DisplayNames([currentLocale], {
 				type: 'region'
 			});
 
