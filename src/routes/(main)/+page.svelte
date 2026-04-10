@@ -15,7 +15,7 @@
 	import PageGrid from '$lib/PageGrid.svelte';
 	import SocialLinks from '$lib/SocialLinks.svelte';
 	import resume from '$lib/assets/Rajan Singh Resume.pdf';
-	import me from '$lib/assets/me.jpeg';
+	import me from '$lib/assets/me.webp';
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -77,7 +77,14 @@
 
 <header class="home-hero reveal reveal-1">
 	<figure class="home-hero__portrait">
-		<img src={me} alt={m.profile_name()} />
+		<img
+			src={me}
+			alt={m.profile_name()}
+			width="360"
+			height="342"
+			decoding="async"
+			fetchpriority="high"
+		/>
 	</figure>
 	<div class="home-hero__content">
 		<p class="home-hero__eyebrow" data-baffle>{m.home_eyebrow()}</p>

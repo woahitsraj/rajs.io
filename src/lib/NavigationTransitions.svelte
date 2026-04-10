@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
 	import { tick } from 'svelte';
-	import { onMount } from 'svelte';
 	import { baseLocale, extractLocaleFromUrl, setLocale } from '$lib/paraglide/runtime.js';
 	import type baffleImport from 'baffle';
 
@@ -36,14 +35,23 @@
 		document.documentElement.toggleAttribute(PAGE_TRANSITION_ATTR, active);
 	}
 
+	async function ensureBaffle() {
+		if (baffle) return baffle;
+
+		const module = await import('baffle');
+		baffle = module.default;
+
+		return baffle;
+	}
+
 	async function runLocaleBaffle({ preNavigation }: { preNavigation: boolean }) {
-		if (!baffle) return;
+		const baffleLib = await ensureBaffle();
 
 		const targets = getTargets();
 
 		if (targets.length === 0) return;
 
-		const instance = baffle(targets, BAFFLE_OPTIONS).start();
+		const instance = baffleLib(targets, BAFFLE_OPTIONS).start();
 		const revealDelay = preNavigation ? 0 : 90;
 		const revealDuration = preNavigation ? 180 : 520;
 
@@ -54,11 +62,6 @@
 		instance.reveal(revealDuration);
 		await new Promise((resolve) => window.setTimeout(resolve, revealDuration));
 	}
-
-	onMount(async () => {
-		const module = await import('baffle');
-		baffle = module.default;
-	});
 
 	onNavigate(async (navigation) => {
 		if (!navigation.to?.url) return;
