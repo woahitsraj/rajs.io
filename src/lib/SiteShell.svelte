@@ -59,11 +59,15 @@
 {#key currentLocale}
 	<div class="site-shell">
 		<nav class="site-shell__frame">
-			<a href={homeHref} data-baffle>{m.nav_home()}</a>
+			<a href={homeHref} class="nav-home">
+				<span class="nav-link__label" data-baffle>{m.nav_home()}</span>
+			</a>
 			<div class="page-links">
-				<a href={workHref} class:active={routeId === '/(main)/work'} data-baffle>{m.nav_work()}</a>
-				<a href={experienceHref} class:active={routeId === '/(main)/experience'} data-baffle>
-					{m.nav_experience()}
+				<a href={workHref} class:active={routeId === '/(main)/work'}>
+					<span class="nav-link__label" data-baffle>{m.nav_work()}</span>
+				</a>
+				<a href={experienceHref} class:active={routeId === '/(main)/experience'}>
+					<span class="nav-link__label" data-baffle>{m.nav_experience()}</span>
 				</a>
 			</div>
 			<div class="nav-controls">
@@ -167,6 +171,7 @@
 		z-index: 20;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
+		grid-template-areas: 'home links controls';
 		align-items: center;
 		padding-block: 1.2rem;
 	}
@@ -182,19 +187,23 @@
 		transition: background-color 0.45s ease;
 	}
 
-	nav > a {
+	.nav-home {
+		grid-area: home;
 		justify-self: start;
+		display: inline-flex;
+		align-items: center;
 		font-size: var(--text-body);
 		letter-spacing: 0.08em;
 		color: var(--site-accent);
 		text-decoration: none;
 	}
 
-	nav > a:hover {
+	.nav-home:hover {
 		color: var(--site-text);
 	}
 
 	.page-links {
+		grid-area: links;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -202,6 +211,9 @@
 	}
 
 	.page-links a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		font-size: var(--text-body);
 		color: var(--site-text-muted);
 		text-decoration: none;
@@ -213,10 +225,16 @@
 	}
 
 	.nav-controls {
+		grid-area: controls;
 		justify-self: end;
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
+	}
+
+	.nav-link__label {
+		display: block;
+		white-space: nowrap;
 	}
 
 	.theme-toggle {
@@ -321,16 +339,47 @@
 		}
 
 		nav {
-			grid-template-columns: auto 1fr auto;
-			padding-block: 1rem;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-areas:
+				'controls controls controls'
+				'home links links';
+			row-gap: 0.8rem;
+			padding-block: 0.95rem 0.85rem;
 		}
 
 		.page-links {
-			gap: var(--space-16);
+			width: 100%;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.9rem;
 		}
 
 		.nav-controls {
+			width: 100%;
+			justify-self: stretch;
+			justify-content: space-between;
 			gap: 0.5rem;
+		}
+
+		.nav-home,
+		.page-links a {
+			min-width: 0;
+			justify-self: center;
+		}
+
+		.page-links a {
+			padding-block: 0.15rem;
+		}
+
+		.page-links a.active {
+			color: var(--site-accent);
+		}
+
+		.page-links .nav-link__label {
+			width: 100%;
+			overflow: hidden;
+			text-overflow: clip;
+			text-align: center;
 		}
 	}
 </style>
