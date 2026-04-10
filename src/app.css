@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@view-transition {
+	navigation: auto;
+}
+
 @keyframes page-fade-in {
 	from {
 		opacity: 0;
@@ -143,12 +147,30 @@ html[data-locale-transition] .reveal-scope:not(.visible) .reveal {
 	transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
 
+html[data-page-transition] .reveal-scope:not(.visible) .reveal {
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+
 html[data-locale-transition] .reveal,
 html[data-locale-transition] .reveal-scope.visible .reveal-1,
 html[data-locale-transition] .reveal-scope.visible .reveal-2,
 html[data-locale-transition] .reveal-scope.visible .reveal-3,
 html[data-locale-transition] .reveal-scope.visible .reveal-4,
 html[data-locale-transition] .reveal-scope.visible .reveal-5 {
+	opacity: 1;
+	transform: translateY(0);
+	transition: none;
+	transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+
+html[data-page-transition] .reveal,
+html[data-page-transition] .reveal-scope.visible .reveal-1,
+html[data-page-transition] .reveal-scope.visible .reveal-2,
+html[data-page-transition] .reveal-scope.visible .reveal-3,
+html[data-page-transition] .reveal-scope.visible .reveal-4,
+html[data-page-transition] .reveal-scope.visible .reveal-5 {
 	opacity: 1;
 	transform: translateY(0);
 	transition: none;

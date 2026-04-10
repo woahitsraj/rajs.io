@@ -9,6 +9,7 @@
 
 	const BAFFLE_SELECTOR = '[data-baffle]';
 	const LOCALE_TRANSITION_ATTR = 'data-locale-transition';
+	const PAGE_TRANSITION_ATTR = 'data-page-transition';
 	const BAFFLE_OPTIONS = {
 		characters:
 			'ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンÅåÄäÖöÁáÉéÍíÓóÚúÜüÑñAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz~!@#$%^&*()-+=[]{}|;:,./<>?',
@@ -29,6 +30,10 @@
 
 	function setLocaleTransitionState(active: boolean) {
 		document.documentElement.toggleAttribute(LOCALE_TRANSITION_ATTR, active);
+	}
+
+	function setPageTransitionState(active: boolean) {
+		document.documentElement.toggleAttribute(PAGE_TRANSITION_ATTR, active);
 	}
 
 	async function runLocaleBaffle({ preNavigation }: { preNavigation: boolean }) {
@@ -80,9 +85,16 @@
 		if (!document.startViewTransition) return;
 
 		return new Promise<void>((resolve) => {
+			setPageTransitionState(true);
+
 			document.startViewTransition(async () => {
 				resolve();
-				await navigation.complete;
+				try {
+					await navigation.complete;
+				} finally {
+					await tick();
+					setPageTransitionState(false);
+				}
 			});
 		});
 	});

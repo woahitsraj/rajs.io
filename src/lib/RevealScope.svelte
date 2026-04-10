@@ -12,13 +12,20 @@
 		);
 	}
 
+	function isPageTransitionActive() {
+		return (
+			typeof document !== 'undefined' &&
+			document.documentElement.hasAttribute('data-page-transition')
+		);
+	}
+
 	let { children }: Props = $props();
-	let visible = $state(isLocaleTransitionActive());
+	let visible = $state(isLocaleTransitionActive() || isPageTransitionActive());
 	let revealFrame = 0;
 	let revealTimeout = 0;
 
 	onMount(() => {
-		if (isLocaleTransitionActive()) {
+		if (isLocaleTransitionActive() || isPageTransitionActive()) {
 			visible = true;
 			return;
 		}

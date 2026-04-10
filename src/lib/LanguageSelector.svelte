@@ -14,7 +14,7 @@
 	let root: HTMLDivElement | undefined;
 	let open = $state(false);
 	let currentLocale = $derived(extractLocaleFromUrl(page.url) ?? locales[0] ?? 'en');
-	let currentPath = $derived(page.url.pathname);
+	let currentPath = $derived(`${page.url.pathname}${page.url.search}`);
 	let selectedMark = $derived(localeMarks[currentLocale] ?? currentLocale.toUpperCase());
 
 	function close() {
@@ -58,32 +58,55 @@
 </script>
 
 <div class="language-selector" class:is-open={open} bind:this={root}>
-	<button
-		type="button"
-		class="language-selector__trigger"
-		aria-haspopup="menu"
-		aria-expanded={open}
-		aria-label={m.language_selector_aria()}
-		onclick={toggle}
-	>
-		<span class="language-selector__code">{selectedMark}</span>
-		<span class="language-selector__chevron" aria-hidden="true"></span>
-	</button>
-
-	<div class="language-selector__menu" class:open>
-		<div class="language-selector__panel" role="menu" aria-label={m.language_selector_menu_aria()}>
+	<form class="language-selector__fallback" method="GET" action="/locale">
+		<label class="language-selector__sr-only" for="language-selector-native">
+			{m.language_selector_aria()}
+		</label>
+		<input type="hidden" name="path" value={currentPath} />
+		<select
+			id="language-selector-native"
+			name="locale"
+			class="language-selector__native"
+			aria-label={m.language_selector_aria()}
+			value={currentLocale}
+		>
 			{#each locales as locale (locale)}
-				<a
-					href={localizeHref(currentPath, { locale })}
-					class="language-selector__option"
-					class:active={currentLocale === locale}
-					role="menuitem"
-					aria-current={currentLocale === locale ? 'page' : undefined}
-					onclick={close}
-				>
-					<span>{localeMarks[locale] ?? locale.toUpperCase()}</span>
-				</a>
+				<option value={locale}>
+					{localeMarks[locale] ?? locale.toUpperCase()}
+				</option>
 			{/each}
+		</select>
+		<button type="submit" class="language-selector__submit">Go</button>
+	</form>
+
+	<div class="language-selector__enhanced">
+		<button
+			type="button"
+			class="language-selector__trigger"
+			aria-haspopup="menu"
+			aria-expanded={open}
+			aria-label={m.language_selector_aria()}
+			onclick={toggle}
+		>
+			<span class="language-selector__code">{selectedMark}</span>
+			<span class="language-selector__chevron" aria-hidden="true"></span>
+		</button>
+
+		<div class="language-selector__menu" class:open>
+			<div class="language-selector__panel" role="menu" aria-label={m.language_selector_menu_aria()}>
+				{#each locales as locale (locale)}
+					<a
+						href={localizeHref(currentPath, { locale })}
+						class="language-selector__option"
+						class:active={currentLocale === locale}
+						role="menuitem"
+						aria-current={currentLocale === locale ? 'page' : undefined}
+						onclick={close}
+					>
+						<span>{localeMarks[locale] ?? locale.toUpperCase()}</span>
+					</a>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>
@@ -93,11 +116,43 @@
 		position: relative;
 	}
 
+	.language-selector__enhanced {
+		display: none;
+	}
+
+	:global(html.js) .language-selector__enhanced {
+		display: block;
+	}
+
+	:global(html.js) .language-selector__fallback {
+		display: none;
+	}
+
+	.language-selector__fallback {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		margin: 0;
+	}
+
+	.language-selector__sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.language-selector__native,
+	.language-selector__submit,
 	.language-selector__trigger {
 		width: auto;
 		min-width: 0;
 		height: 2rem;
-		padding: 0 0.55rem 0 0.65rem;
 		border: 1px solid var(--site-rule);
 		border-radius: var(--radius-pill);
 		background: color-mix(in srgb, var(--site-surface) 82%, var(--site-bg) 18%);
@@ -105,10 +160,24 @@
 		color: var(--site-text-muted);
 		font-family: var(--font-body);
 		font-size: 1rem;
-		cursor: pointer;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		box-sizing: border-box;
+	}
+
+	.language-selector__native,
+	.language-selector__submit {
+		cursor: pointer;
+		transition:
+			border-color 0.45s ease,
+			color 0.45s ease,
+			background-color 0.45s ease;
+	}
+
+	.language-selector__trigger {
+		padding: 0 0.55rem 0 0.65rem;
+		cursor: pointer;
 		gap: 0.4rem;
 		transition:
 			border-color 0.45s ease,
@@ -116,6 +185,19 @@
 			background-color 0.45s ease;
 	}
 
+	.language-selector__native {
+		padding: 0 0.8rem;
+		appearance: auto;
+	}
+
+	.language-selector__submit {
+		padding: 0 0.8rem;
+	}
+
+	.language-selector__native:hover,
+	.language-selector__native:focus-visible,
+	.language-selector__submit:hover,
+	.language-selector__submit:focus-visible,
 	.language-selector__trigger:hover,
 	.language-selector.is-open .language-selector__trigger {
 		border-color: var(--site-accent);
@@ -123,6 +205,8 @@
 		background: color-mix(in srgb, var(--site-surface) 92%, var(--site-bg) 8%);
 	}
 
+	.language-selector__native:focus-visible,
+	.language-selector__submit:focus-visible,
 	.language-selector__trigger:focus-visible {
 		outline: 2px solid var(--site-accent);
 		outline-offset: 3px;
@@ -208,6 +292,10 @@
 	@media (max-width: 768px) {
 		.language-selector__trigger {
 			padding-inline: 0.6rem 0.5rem;
+		}
+
+		.language-selector__fallback {
+			gap: 0.35rem;
 		}
 	}
 </style>
