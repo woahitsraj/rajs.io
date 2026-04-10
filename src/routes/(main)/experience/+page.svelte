@@ -1,83 +1,73 @@
 <script lang="ts">
+	import EntryCard from '$lib/EntryCard.svelte';
+	import PageGrid from '$lib/PageGrid.svelte';
+	import PageIntro from '$lib/PageIntro.svelte';
+	import { m } from '$lib/paraglide/messages.js';
+
 	const experience = [
 		{
-			role: 'Senior Software Engineer',
+			role: m.exp_1_role(),
 			company: 'Glide',
-			period: 'April 2024 - Present',
-			details: [
-				'Worked across the stack, fully owning and delivering several critical features including report generation with advanced filtering, object generation using LLMs/AI, and cron scheduling.'
-			]
+			period: m.exp_1_period(),
+			details: [m.exp_1_detail_1()]
 		},
 		{
-			role: 'Staff Software Engineer',
+			role: m.exp_2_role(),
 			company: 'Subscribe Inc',
-			period: 'September 2022 - April 2024',
-			details: [
-				'Worked on a large React and TypeScript-based subscription billing application with many stakeholders and complicated requirements as the most senior member of the frontend team.',
-				'Introduced automated testing through Playwright, built tools to help other developers work with complicated forms, and consistently shipped critical features to customers.'
-			]
+			period: m.exp_2_period(),
+			details: [m.exp_2_detail_1(), m.exp_2_detail_2()]
 		},
 		{
-			role: 'Director of Engineering',
+			role: m.exp_3_role(),
 			company: 'Hyperlab AB',
-			period: 'February 2022 - September 2022',
-			details: [
-				'Held 1:1s with engineers, interacted directly with customers, and worked with other leadership to quickly deliver work to clients.',
-				'Continued to be heavily involved in development in Svelte and worked on individual stores as well as an overall e-commerce framework for reusability of common patterns.'
-			]
+			period: m.exp_3_period(),
+			details: [m.exp_3_detail_1(), m.exp_3_detail_2()]
 		},
 		{
-			role: 'Senior Frontend Engineer',
+			role: m.exp_4_role(),
 			company: 'Hyperlab AB',
-			period: 'February 2018 - February 2022',
-			details: [
-				'E-commerce development primarily in React using server-side rendering, TypeScript, GraphQL, Webpack, and other cutting-edge web technologies.',
-				'Focused on performance, caching, and tooling to deliver lightweight yet fully featured web apps using Svelte.'
-			]
+			period: m.exp_4_period(),
+			details: [m.exp_4_detail_1(), m.exp_4_detail_2()]
 		},
 		{
-			role: 'Software Engineer',
+			role: m.exp_5_role(),
 			company: 'Founded Technologies Inc.',
-			period: 'October 2016 - December 2017',
-			details: ['Helped build a web application to automate small business legal needs in Canada.']
+			period: m.exp_5_period(),
+			details: [m.exp_5_detail_1()]
 		},
 		{
-			role: 'Software Engineer',
+			role: m.exp_6_role(),
 			company: 'Workday Inc',
-			period: 'July 2014 - August 2015',
+			period: m.exp_6_period(),
 			details: []
 		}
 	];
+
+	const revealClasses = ['reveal-2', 'reveal-3', 'reveal-4'];
+
+	function cardRevealClass(index: number) {
+		return revealClasses[index] ?? 'reveal-5';
+	}
 </script>
 
 <svelte:head>
-	<title>Experience | Rajan Singh</title>
+	<title>{m.experience_title()} | {m.profile_name()}</title>
 </svelte:head>
 
-<header class="page-head reveal reveal-1">
-	<p class="eyebrow">Work Experience</p>
-	<h1>Experience</h1>
-	<p class="subtitle">Roles and responsibilities across my professional career.</p>
-</header>
+<PageIntro
+	eyebrow={m.experience_head_eyebrow()}
+	heading={m.experience_head_heading()}
+	subtitle={m.experience_head_subtitle()}
+/>
 
-<main class="grid">
+<PageGrid>
 	{#each experience as item, index (item.role + item.company + item.period)}
-		<section
-			class="span-full entry-card reveal"
-			class:reveal-2={index === 0}
-			class:reveal-3={index === 1}
-			class:reveal-4={index === 2}
-			class:reveal-5={index >= 3}
-		>
-			<h2>{item.role}</h2>
-			<p class="entry-meta">{item.company} <span aria-hidden="true">·</span> {item.period}</p>
-			{#if item.details.length > 0}
-				<ul class="detail-list">
-					{#each item.details as detail (detail)}
-						<li>{detail}</li>
-					{/each}
-				</ul>
-			{/if}
-		</section>
+		<EntryCard
+			title={item.role}
+			metaParts={[item.company, item.period]}
+			metaBaffle={true}
+			details={item.details}
+			revealClass={cardRevealClass(index)}
+		/>
 	{/each}
-</main>
+</PageGrid>

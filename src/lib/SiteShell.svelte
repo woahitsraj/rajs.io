@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import { m } from '$lib/paraglide/messages.js';
+	import { extractLocaleFromUrl, localizeHref } from '$lib/paraglide/runtime.js';
 	import RevealScope from '$lib/RevealScope.svelte';
+	import LanguageSelector from '$lib/LanguageSelector.svelte';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -11,12 +13,13 @@
 
 	const LIGHT_THEME = '#f3ede3';
 	const DARK_THEME = '#15110d';
-	const homeHref = resolve('/');
-	const workHref = resolve('/work');
-	const experienceHref = resolve('/experience');
 
-	let { children, footerText = 'Rajan Singh' }: Props = $props();
+	let { children, footerText = m.profile_name() }: Props = $props();
 	let routeId = $derived(page.route.id);
+	let currentLocale = $derived(extractLocaleFromUrl(page.url));
+	let homeHref = $derived(localizeHref('/', { locale: currentLocale }));
+	let workHref = $derived(localizeHref('/work', { locale: currentLocale }));
+	let experienceHref = $derived(localizeHref('/experience', { locale: currentLocale }));
 	let dark = $state(false);
 
 	function applyTheme(nextDark: boolean) {
@@ -53,29 +56,330 @@
 	}
 </script>
 
-<div class="site-shell">
-	<nav class="site-shell__frame">
-		<a href={homeHref}>Home</a>
-		<div class="page-links">
-			<a href={workHref} class:active={routeId === '/(main)/work'}>Work</a>
-			<a href={experienceHref} class:active={routeId === '/(main)/experience'}>Experience</a>
+{#key currentLocale}
+	<div class="site-shell">
+		<nav class="site-shell__frame">
+			<a href={homeHref} class="nav-home">
+				<span class="nav-link__label" data-baffle>{m.nav_home()}</span>
+			</a>
+			<div class="page-links">
+				<a href={workHref} class:active={routeId === '/(main)/work'}>
+					<span class="nav-link__label" data-baffle>{m.nav_work()}</span>
+				</a>
+				<a href={experienceHref} class:active={routeId === '/(main)/experience'}>
+					<span class="nav-link__label" data-baffle>{m.nav_experience()}</span>
+				</a>
+			</div>
+			<div class="nav-controls">
+				<LanguageSelector />
+				<button
+					class="theme-toggle"
+					class:is-dark={dark}
+					type="button"
+					onclick={toggle}
+					aria-label={m.theme_toggle_aria()}
+					aria-pressed={dark}
+				>
+					<svg class="theme-toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
+						<g class="theme-toggle__sun">
+							<circle class="theme-toggle__sun-core" cx="12" cy="12" r="4"></circle>
+							<g class="theme-toggle__rays">
+								<path d="M12 2.75v2.5"></path>
+								<path d="M12 18.75v2.5"></path>
+								<path d="m5.46 5.46 1.77 1.77"></path>
+								<path d="m16.77 16.77 1.77 1.77"></path>
+								<path d="M2.75 12h2.5"></path>
+								<path d="M18.75 12h2.5"></path>
+								<path d="m5.46 18.54 1.77-1.77"></path>
+								<path d="m16.77 7.23 1.77-1.77"></path>
+							</g>
+						</g>
+						<g class="theme-toggle__moon">
+							<path d="M15.5 4.5a7.5 7.5 0 1 0 0 15 8 8 0 1 1 0-15Z"></path>
+						</g>
+					</svg>
+				</button>
+			</div>
+		</nav>
+
+		<div class="site-shell__page">
+			{#key page.url.pathname}
+				<RevealScope>
+					{@render children?.()}
+				</RevealScope>
+			{/key}
 		</div>
-		<button class="theme-toggle" class:is-dark={dark} onclick={toggle} aria-label="toggle theme">
-			<span class="theme-toggle__glyph" aria-hidden="true">
-				<span class="theme-toggle__dot"></span>
-			</span>
-		</button>
-	</nav>
 
-	<div class="site-shell__page">
-		{#key page.url.pathname}
-			<RevealScope>
-				{@render children?.()}
-			</RevealScope>
-		{/key}
+		<footer class="site-shell__frame">
+			<span data-baffle>{footerText}</span>
+		</footer>
 	</div>
+{/key}
 
-	<footer class="site-shell__frame">
-		<span>{footerText}</span>
-	</footer>
-</div>
+<style>
+	.site-shell {
+		--shell-gutter: var(--space-32);
+		font-family: var(--font-body);
+		background-color: var(--site-bg);
+		color: var(--site-text);
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		overflow-x: hidden;
+		transition:
+			background-color 0.45s ease,
+			color 0.45s ease;
+	}
+
+	.site-shell__frame,
+	.site-shell__page {
+		position: relative;
+		width: min(100%, var(--site-max-width));
+		margin-inline: auto;
+		padding-inline: var(--shell-gutter);
+		box-sizing: border-box;
+	}
+
+	.site-shell__page {
+		z-index: 10;
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+	}
+
+	.site-shell :global(a) {
+		transition:
+			color 0.25s ease,
+			text-decoration-color 0.25s ease,
+			background-color 0.25s ease,
+			border-color 0.25s ease;
+	}
+
+	.site-shell :global(a:focus-visible) {
+		outline: 2px solid var(--site-accent);
+		outline-offset: 3px;
+	}
+
+	nav,
+	footer {
+		position: relative;
+		box-sizing: border-box;
+	}
+
+	nav {
+		z-index: 20;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		grid-template-areas: 'home links controls';
+		align-items: center;
+		padding-block: 1.2rem;
+	}
+
+	nav::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 1px;
+		background: var(--site-rule);
+		transition: background-color 0.45s ease;
+	}
+
+	.nav-home {
+		grid-area: home;
+		justify-self: start;
+		display: inline-flex;
+		align-items: center;
+		font-size: var(--text-body);
+		letter-spacing: 0.08em;
+		color: var(--site-accent);
+		text-decoration: none;
+	}
+
+	.nav-home:hover {
+		color: var(--site-text);
+	}
+
+	.page-links {
+		grid-area: links;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-24);
+	}
+
+	.page-links a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-size: var(--text-body);
+		color: var(--site-text-muted);
+		text-decoration: none;
+	}
+
+	.page-links a:hover,
+	.page-links a.active {
+		color: var(--site-accent);
+	}
+
+	.nav-controls {
+		grid-area: controls;
+		justify-self: end;
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.nav-link__label {
+		display: block;
+		white-space: nowrap;
+	}
+
+	.theme-toggle {
+		justify-self: end;
+		background: none;
+		border: 1px solid var(--site-rule);
+		color: var(--site-text-muted);
+		font-family: var(--font-body);
+		font-size: 1rem;
+		cursor: pointer;
+		width: 2rem;
+		height: 2rem;
+		border-radius: var(--radius-round);
+		display: none;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		transition:
+			border-color 0.45s ease,
+			color 0.45s ease,
+			background-color 0.45s ease;
+	}
+
+	:global(html.js) .site-shell .theme-toggle {
+		display: flex;
+	}
+
+	.theme-toggle:hover {
+		border-color: var(--site-accent);
+		color: var(--site-accent);
+	}
+
+	.theme-toggle__icon {
+		width: 0.8rem;
+		height: 0.8rem;
+		max-width: 100%;
+		max-height: 100%;
+		display: block;
+		overflow: hidden;
+		flex-shrink: 0;
+	}
+
+	.theme-toggle__sun *,
+	.theme-toggle__moon * {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.theme-toggle__sun,
+	.theme-toggle__moon {
+		transform-origin: 12px 12px;
+	}
+
+	.theme-toggle__sun {
+		opacity: 1;
+	}
+
+	.theme-toggle__moon {
+		opacity: 0;
+	}
+
+	.theme-toggle.is-dark .theme-toggle__sun {
+		opacity: 0;
+	}
+
+	.theme-toggle.is-dark .theme-toggle__moon {
+		opacity: 1;
+	}
+
+	footer {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-block: var(--space-24);
+		margin-top: auto;
+	}
+
+	footer::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 1px;
+		background: var(--site-rule);
+		transition: background-color 0.45s ease;
+	}
+
+	footer span {
+		font-size: var(--text-caption);
+		color: var(--site-text-muted);
+		letter-spacing: 0.08em;
+		transition: color 0.45s ease;
+	}
+
+	@media (max-width: 768px) {
+		.site-shell {
+			--shell-gutter: var(--space-24);
+		}
+
+		nav {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-areas:
+				'controls controls controls'
+				'home links links';
+			row-gap: 0.8rem;
+			padding-block: 0.95rem 0.85rem;
+		}
+
+		.page-links {
+			width: 100%;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.9rem;
+		}
+
+		.nav-controls {
+			width: 100%;
+			justify-self: stretch;
+			justify-content: space-between;
+			gap: 0.5rem;
+		}
+
+		.nav-home,
+		.page-links a {
+			min-width: 0;
+			justify-self: center;
+		}
+
+		.page-links a {
+			padding-block: 0.15rem;
+		}
+
+		.page-links a.active {
+			color: var(--site-accent);
+		}
+
+		.page-links .nav-link__label {
+			width: 100%;
+			overflow: hidden;
+			text-overflow: clip;
+			text-align: center;
+		}
+	}
+</style>
