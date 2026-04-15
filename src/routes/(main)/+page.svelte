@@ -69,6 +69,7 @@
 	});
 	let locationCity = $derived(city ?? m.home_location_fallback_city());
 	let locationFlag = $derived(flagFromCountryCode(countryCode ?? 'SE'));
+	let heroNameLastSuffix = $derived(m.profile_name_last_suffix());
 </script>
 
 <svelte:head>
@@ -89,8 +90,12 @@
 	<div class="home-hero__content">
 		<p class="home-hero__eyebrow" data-baffle>{m.home_eyebrow()}</p>
 		<h1 class="home-hero__title">
-			<span data-baffle>{m.profile_name_first()}</span><br /><em data-baffle
-				>{m.profile_name_last()}</em
+			<span data-baffle>{m.profile_name_first()}</span><br /><em
+				class:home-hero__title-last--japanese={currentLocale === 'ja'}
+				><span data-baffle>{m.profile_name_last()}</span>{#if heroNameLastSuffix}<span
+						class="home-hero__title-suffix"
+						data-baffle>{heroNameLastSuffix}</span
+					>{/if}</em
 			>
 		</h1>
 		<p class="home-hero__subtitle" data-baffle>{m.home_subtitle()}</p>
@@ -222,6 +227,10 @@
 		transition: color 0.45s ease;
 	}
 
+	.home-hero__title-suffix {
+		white-space: nowrap;
+	}
+
 	.home-hero__subtitle {
 		font-size: var(--text-subtitle);
 		color: var(--site-text-muted);
@@ -351,6 +360,16 @@
 
 		.home-hero__title {
 			line-height: 1;
+		}
+
+		.home-hero__title-last--japanese {
+			display: inline-flex;
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.home-hero__title-last--japanese .home-hero__title-suffix {
+			display: inline;
 		}
 	}
 </style>
