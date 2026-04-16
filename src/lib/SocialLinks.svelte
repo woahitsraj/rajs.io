@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SimpleIcon } from 'simple-icons';
 
-	type LinkIcon = Pick<SimpleIcon, 'path'> | 'resume';
+	type LinkIcon = Pick<SimpleIcon, 'path'>;
 
 	interface SocialLink {
 		label: string;
@@ -14,10 +14,6 @@
 	}
 
 	let { links }: Props = $props();
-
-	function isCustomIcon(icon?: LinkIcon): icon is 'resume' {
-		return typeof icon === 'string';
-	}
 </script>
 
 <div class="social-links">
@@ -25,20 +21,9 @@
 		<a href={link.href} target="_blank" rel="noopener noreferrer" class:text-only={!link.icon}>
 			{#if link.icon}
 				<span class="social-links__icon" aria-hidden="true">
-					{#if isCustomIcon(link.icon)}
-						<svg class="social-links__stroke-icon" viewBox="0 0 24 24" focusable="false">
-							<path
-								d="M8 3.5h6.25l4.25 4.25V19A1.5 1.5 0 0 1 17 20.5H8A1.5 1.5 0 0 1 6.5 19V5A1.5 1.5 0 0 1 8 3.5Z"
-							/>
-							<path d="M14.25 3.5V8h4.25" />
-							<path d="M9 12h6" />
-							<path d="M9 15h6" />
-						</svg>
-					{:else}
-						<svg viewBox="0 0 24 24" focusable="false">
-							<path d={link.icon.path}></path>
-						</svg>
-					{/if}
+					<svg viewBox="0 0 24 24" focusable="false">
+						<path d={link.icon.path}></path>
+					</svg>
 				</span>
 			{/if}
 			<span class="social-links__label" data-baffle>{link.label}</span>
@@ -108,14 +93,6 @@
 		height: 1rem;
 		display: block;
 		fill: currentColor;
-	}
-
-	.social-links__stroke-icon {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 1.6;
-		stroke-linecap: round;
-		stroke-linejoin: round;
 	}
 
 	.social-links__label {

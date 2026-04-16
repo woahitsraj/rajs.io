@@ -14,7 +14,6 @@
 	import { extractLocaleFromUrl } from '$lib/paraglide/runtime.js';
 	import PageGrid from '$lib/PageGrid.svelte';
 	import SocialLinks from '$lib/SocialLinks.svelte';
-	import resume from '$lib/assets/Rajan Singh Resume.pdf';
 	import me from '$lib/assets/me.webp';
 	import type { PageData } from './$types';
 
@@ -22,7 +21,7 @@
 		data: PageData;
 	}
 
-	type LinkIcon = Pick<SimpleIcon, 'path'> | 'resume';
+	type LinkIcon = Pick<SimpleIcon, 'path'>;
 
 	function flagFromCountryCode(code?: string) {
 		if (!code || code.length !== 2) return '🇸🇪';
@@ -37,7 +36,6 @@
 	let { data }: Props = $props();
 	let currentLocale = $derived(extractLocaleFromUrl(page.url) ?? 'en');
 	let socialLinks = $derived([
-		{ label: m.link_resume(), href: resume, icon: 'resume' },
 		{ label: 'GitHub', href: 'https://github.com/woahitsraj', icon: siGithub },
 		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/woahitsraj/' },
 		{ label: 'Bluesky', href: 'https://bsky.app/profile/woahitsraj.com', icon: siBluesky },
