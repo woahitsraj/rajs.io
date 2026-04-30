@@ -31,14 +31,17 @@ test.describe('without javascript', () => {
 	test('revealed content renders normally', async ({ page }) => {
 		await page.goto('/');
 
-		const styles = await page.locator('.reveal').first().evaluate((element) => {
-			const computed = getComputedStyle(element);
+		const styles = await page
+			.locator('.reveal')
+			.first()
+			.evaluate((element) => {
+				const computed = getComputedStyle(element);
 
-			return {
-				opacity: computed.opacity,
-				transform: computed.transform
-			};
-		});
+				return {
+					opacity: computed.opacity,
+					transform: computed.transform
+				};
+			});
 
 		expect(styles.opacity).toBe('1');
 		expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(styles.transform);

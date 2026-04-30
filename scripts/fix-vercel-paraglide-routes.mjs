@@ -82,7 +82,9 @@ try {
 	}
 
 	for (const segment of ['experience', 'work']) {
-		const baseRoute = config.routes.find((route) => route.src === `^/${segment}/?(?:/__data.json)?$`);
+		const baseRoute = config.routes.find(
+			(route) => route.src === `^/${segment}/?(?:/__data.json)?$`
+		);
 		if (!baseRoute) continue;
 
 		const src = `^/(${localeGroup})/${segment}/?(?:/__data.json)?$`;
@@ -112,7 +114,9 @@ try {
 		}
 
 		for (const segment of ['experience', 'work']) {
-			const baseRoute = config.routes.find((route) => route.src === `^/${segment}/?(?:/__data.json)?$`);
+			const baseRoute = config.routes.find(
+				(route) => route.src === `^/${segment}/?(?:/__data.json)?$`
+			);
 			if (!baseRoute) continue;
 
 			const src = `^/${escapeRegex(legacyLocale)}/${segment}/?(?:/__data.json)?$`;

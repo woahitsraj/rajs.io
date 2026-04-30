@@ -93,7 +93,11 @@
 		</button>
 
 		<div class="language-selector__menu" class:open>
-			<div class="language-selector__panel" role="menu" aria-label={m.language_selector_menu_aria()}>
+			<div
+				class="language-selector__panel"
+				role="menu"
+				aria-label={m.language_selector_menu_aria()}
+			>
 				{#each locales as locale (locale)}
 					<a
 						href={localizeHref(currentPath, { locale })}

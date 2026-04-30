@@ -9,7 +9,7 @@ You have a mostly empty project here witht he following:
 - Svelte
 - Typescript
 
-I want you to create five different designs. Each design should be unique and creative from all the others that you create. They should be hosted on /1 /2 /3 /4 /5. 
+I want you to create five different designs. Each design should be unique and creative from all the others that you create. They should be hosted on /1 /2 /3 /4 /5.
 
 They should have both a light mode and dark mode.
 
